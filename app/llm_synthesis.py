@@ -11,18 +11,37 @@ logger = logging.getLogger(__name__)
 class GrokSynthesisService:
     def __init__(self):
         self.api_key = os.getenv("GROQ_API_KEY", "demo-key")
+        
+        # Available Groq FREE models (2025)
+        self.available_models = {
+            "openai/gpt-oss-20b": "OpenAI GPT-OSS 20B - Current default (3.6B active params)",
+            "openai/gpt-oss-120b": "OpenAI GPT-OSS 120B - Flagship model (5.1B active params)",
+            "llama3-70b-8192": "Llama 3 70B (8K context)",
+            "llama3-8b-8192": "Llama 3 8B (8K context)",
+            "llama-3.1-8b-instant": "Llama 3.1 8B Instant",
+            "gemma2-9b-it": "Gemma 2 9B Instruct"
+        }
+        
+        # Current model - change via GROQ_MODEL environment variable
+        self.model = os.getenv("GROQ_MODEL", "openai/gpt-oss-20b")
+        
         if not self.api_key or self.api_key == "demo-key":
             logger.warning("GROQ_API_KEY not found. LLM synthesis will be disabled.")
             self.client = None
         else:
             self.client = Groq(api_key=self.api_key)
+            model_desc = self.available_models.get(self.model, "Unknown model")
+            logger.info(f"Initialized Groq client with model: {self.model} ({model_desc})")
     
-    def synthesize_answer(self, question: str, search_results: List[Dict[str, Any]]) -> str:
+    def synthesize_answer(self, question: str, search_results: List[Dict[str, Any]]) -> Dict[str, str]:
         """
         Generate a natural language answer from RAG search results using Grok
         """
         if not self.client:
-            return "LLM synthesis unavailable - GROQ_API_KEY not configured"
+            return {
+                "answer": "LLM synthesis unavailable - GROQ_API_KEY not configured",
+                "model": "N/A"
+            }
         
         try:
             # Prepare context from search results
@@ -58,19 +77,26 @@ Instructions:
 
 Answer:"""
 
+            model_name = "openai/gpt-oss-20b"
             response = self.client.chat.completions.create(
-                model="openai/gpt-oss-20b",
+                model=model_name,
                 messages=[{"role": "user", "content": prompt}],
                 max_completion_tokens=800,
                 temperature=0.3,
                 reasoning_effort="medium"
             )
             
-            return response.choices[0].message.content.strip()
+            return {
+                "answer": response.choices[0].message.content.strip(),
+                "model": model_name
+            }
             
         except Exception as e:
             logger.error(f"Error in LLM synthesis: {e}")
-            return f"Error generating synthesized answer: {str(e)}"
+            return {
+                "answer": f"Error generating synthesized answer: {str(e)}",
+                "model": "openai/gpt-oss-20b"
+            }
 
 # Global instance
 grok_synthesis_service = GrokSynthesisService()

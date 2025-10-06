@@ -15,11 +15,12 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #fafbfc;
             color: #2d3748;
-            min-height: 100vh;
+            height: 100vh;
             line-height: 1.6;
             font-size: 16px;
             margin: 0;
             padding: 0;
+            overflow: hidden;
         }
 
         .header {
@@ -237,14 +238,49 @@
         }
 
         .main-container {
-            max-width: 800px;
-            margin: 60px auto;
-            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .messages-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem 1rem;
+            padding-bottom: 1rem;
+        }
+
+        /* Fixed input area at bottom */
+        .input-section {
+            flex-shrink: 0;
+            background: #fafbfc;
+            padding: 16px 20px 20px;
+        }
+
+        .input-container-wrapper {
+            max-width: 100%;
         }
 
         .search-section {
             padding: 0;
-            margin-bottom: 0;
+            margin-bottom: 2rem;
+        }
+
+        /* Welcome section styling */
+        .welcome-section {
+            text-align: center;
+            padding: 6vh 0 4vh;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .welcome-subtitle {
+            font-size: 1.1rem;
+            color: #64748b;
+            font-weight: 400;
+            margin: 0;
         }
 
         .search-title {
@@ -258,43 +294,41 @@
         }
 
         .sample-queries {
-            margin-bottom: 1.5rem;
+            padding: 12px 0 0;
             text-align: center;
         }
 
         .suggestions-label {
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 0.75rem;
+            color: #718096;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
             font-weight: 500;
         }
 
         .suggestion-chips {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.75rem;
+            gap: 8px;
             justify-content: center;
         }
 
         .suggestion-chip {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 20px;
-            padding: 0.625rem 1.25rem;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 8px 14px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.875rem;
-            color: #333;
+            transition: all 0.15s ease;
+            font-size: 0.8rem;
+            color: #374151;
             white-space: nowrap;
             font-weight: 500;
         }
 
         .suggestion-chip:hover {
-            background: #e9ecef;
-            border-color: #adb5bd;
-            color: #212529;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background: #f3f4f6;
+            border-color: #d1d5db;
+            transform: translateY(-1px);
         }
 
         .input-section {
@@ -430,30 +464,6 @@
             margin: 0;
         }
 
-        .query-input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            padding: 16px 8px;
-            color: #2d3748;
-            font-size: 1rem;
-            resize: none;
-            min-height: 3.5rem;
-            max-height: 8rem;
-            font-family: inherit;
-            transition: all 0.3s ease;
-        }
-
-        .query-input:focus {
-            outline: none;
-            background: rgba(255, 255, 255, 0.95);
-            border-color: rgba(255, 255, 255, 0.4);
-            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
-        }
-
-        .query-input::placeholder {
-            color: rgba(29, 29, 31, 0.6);
-        }
 
         .search-button {
             background: #6b7280;
@@ -483,6 +493,172 @@
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
+        }
+
+        /* Modern ChatGPT-style integrated input */
+        .modern-input-container {
+            display: flex;
+            align-items: stretch;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 24px;
+            padding: 0;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            min-height: 52px;
+            margin: 0 auto;
+            max-width: 100%;
+        }
+
+        .modern-input-container:focus-within {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 1px #2563eb, 0 4px 12px rgba(37, 99, 235, 0.15);
+        }
+
+        /* Model selector (left side) */
+        .model-selector-inline {
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            border-right: 1px solid #e5e7eb;
+            min-width: 140px;
+        }
+
+        .model-dropdown-inline {
+            background: transparent;
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            outline: none;
+            padding-right: 20px;
+            font-family: inherit;
+        }
+
+        .model-dropdown-icon {
+            position: absolute;
+            right: 16px;
+            color: #9ca3af;
+            pointer-events: none;
+        }
+
+        /* Main input wrapper */
+        .input-wrapper-modern {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .query-input-modern {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 16px 16px 16px 20px;
+            font-size: 16px;
+            color: #111827;
+            resize: none;
+            outline: none;
+            font-family: inherit;
+            line-height: 1.5;
+            max-height: 200px;
+        }
+
+        .query-input-modern::placeholder {
+            color: #9ca3af;
+        }
+
+        /* Right side controls */
+        .input-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 16px;
+        }
+
+        .upload-button-modern {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: transparent;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .upload-button-modern:hover {
+            background: #f3f4f6;
+            color: #374151;
+            transform: scale(1.1);
+        }
+
+        .upload-button-modern:active {
+            transform: scale(0.95);
+        }
+
+        .send-button-modern {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #000000;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .send-button-modern:hover:not(:disabled) {
+            background: #1f1f1f;
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .send-button-modern:active:not(:disabled) {
+            transform: scale(0.95);
+        }
+
+        .send-button-modern:disabled {
+            background: #e5e7eb;
+            color: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Add loading spinner for send button */
+        .send-button-modern.loading svg {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+            20%, 40%, 60%, 80% { transform: translateX(3px); }
+        }
+
+        /* Improved focus states */
+        .upload-button-modern:focus-visible,
+        .send-button-modern:focus-visible {
+            outline: 2px solid #2563eb;
+            outline-offset: 2px;
         }
 
         .loading-section {
@@ -577,16 +753,22 @@
             font-weight: 600;
         }
 
+        .table-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
         .result-content table,
         .formatted-table {
             width: 100%;
+            min-width: 500px;
             border-collapse: collapse;
-            margin: 1.5rem 0;
+            margin: 0;
             background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: none;
         }
 
         .result-content th,
@@ -858,42 +1040,12 @@
     </style>
 </head>
 <body>
+    <!-- Main content area -->
     <div class="main-container">
-        <div class="search-section" id="searchSection">
-            <h2 class="search-title">What would you like to know about your contracts?</h2>
-            
-            <div class="input-section">
-                <div id="statusArea"></div>
-                <div class="input-container">
-                    <div class="input-wrapper">
-                        <div class="input-actions">
-                            <label class="attach-button" title="Upload documents">
-                                📎
-                                <input type="file" id="fileInput" accept=".pdf" multiple style="display: none;" />
-                            </label>
-                        </div>
-                        <textarea 
-                            id="queryInput" 
-                            class="query-input" 
-                            placeholder="Ask any question about your contracts or upload new documents..."
-                            rows="1"
-                        ></textarea>
-                    </div>
-                    <button id="searchButton" class="search-button">
-                        <span class="search-icon">🔍</span>
-                        <span>Search</span>
-                    </button>
-                </div>
-            </div>
-            
-            <div class="sample-queries" id="sampleQueries">
-                <div class="suggestions-label">Try asking:</div>
-                <div class="suggestion-chips">
-                    <span class="suggestion-chip" data-query="What are the payment terms and billing arrangements?">💰 Payment terms</span>
-                    <span class="suggestion-chip" data-query="What termination clauses and notice requirements exist?">📋 Termination clauses</span>
-                    <span class="suggestion-chip" data-query="What are the liability and indemnification terms?">⚖️ Liability & risk</span>
-                    <span class="suggestion-chip" data-query="What intellectual property provisions are included?">🧠 IP rights</span>
-                </div>
+        <div class="messages-area">
+            <!-- Welcome message -->
+            <div class="welcome-section">
+                <p class="welcome-subtitle">Ask anything about your legal documents</p>
             </div>
             
             <!-- Loading Section -->
@@ -915,39 +1067,116 @@
             <div id="uploadProgressArea" style="display: none; margin-top: 16px;">
                 <div id="uploadProgressList"></div>
             </div>
+
+            <!-- Results section within messages area -->
+            <div class="results-section" id="resultsSection">
+                <div class="result-card">
+                    <div class="result-header">
+                        <div class="result-title">📊 Search Results</div>
+                        <div class="result-info" id="resultInfo"></div>
+                    </div>
+                    <div class="result-content" id="resultContent"></div>
+                </div>
+                
+                <!-- Sources Section - Now First -->
+                <div class="sources-card" id="sourcesSection" style="display: none;">
+                    <div class="sources-header">
+                        <div class="sources-title">
+                            📋 <span id="sourcesTitle">Document Sources</span>
+                        </div>
+                        <div class="sources-subtitle">Click any source to expand full text</div>
+                    </div>
+                    <div id="sourcesList"></div>
+                </div>
+                
+                <!-- AI Analysis Section - Now Second -->
+                <div class="analysis-card" id="analysisSection" style="display: none;">
+                    <div class="analysis-header">
+                        <div class="analysis-title">🤖 AI Analysis</div>
+                        <div class="analysis-subtitle">Synthesized insights from your documents</div>
+                    </div>
+                    <div id="analysisContent"></div>
+                </div>
+
+                <!-- RAG Results Section -->
+                <div class="analysis-card" id="ragSection" style="display: none;">
+                    <div class="analysis-header">
+                        <div class="analysis-title">🔍 RAG Results</div>
+                        <div class="analysis-subtitle">Raw vector search results from documents</div>
+                    </div>
+                    <div id="ragContent"></div>
+                </div>
+            </div>
+
+        </div> <!-- End messages-area -->
+        
+        <!-- Fixed input area at bottom (ChatGPT style) -->
+        <div class="input-section">
+            <div class="input-container-wrapper">
+                <div id="statusArea"></div>
+                
+                <!-- Modern ChatGPT-style input with integrated controls -->
+                <div class="modern-input-container">
+                    <!-- Model selector dropdown (left side) -->
+                    <div class="model-selector-inline">
+                        <select id="modelSelect" class="model-dropdown-inline">
+                            <option value="openai/gpt-oss-20b">GPT-OSS 20B</option>
+                            <option value="openai/gpt-oss-120b">GPT-OSS 120B</option>
+                            <option value="llama3-70b-8192">Llama 3 70B</option>
+                            <option value="llama3-8b-8192">Llama 3 8B</option>
+                            <option value="llama-3.1-8b-instant">Llama 3.1 8B Instant</option>
+                            <option value="gemma2-9b-it">Gemma 2 9B</option>
+                        </select>
+                        <svg class="model-dropdown-icon" width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
+                            <path d="M2 3l3 3 3-3H2z"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- Main input area -->
+                    <div class="input-wrapper-modern">
+                        <textarea 
+                            id="queryInput" 
+                            class="query-input-modern" 
+                            placeholder="Ask anything about your contracts..."
+                            rows="1"
+                        ></textarea>
+                        
+                        <!-- Right side controls -->
+                        <div class="input-controls">
+                            <!-- Upload button -->
+                            <label class="upload-button-modern" title="Upload documents">
+                                <!-- Heroicons: Plus icon -->
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 5v14M5 12h14"/>
+                                </svg>
+                                <input type="file" id="fileInput" accept=".pdf" multiple style="display: none;" />
+                            </label>
+                            
+                            <!-- Send button -->
+                            <button id="searchButton" class="send-button-modern">
+                                <!-- Heroicons: Arrow up icon -->
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 19V5M5 12l7-7 7 7"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Suggestion chips below input -->
+                <div class="sample-queries" id="sampleQueries">
+                    <div class="suggestions-label">Try asking:</div>
+                    <div class="suggestion-chips">
+                        <span class="suggestion-chip" data-query="What are the payment terms and billing arrangements?">💰 Payment terms</span>
+                        <span class="suggestion-chip" data-query="What termination clauses and notice requirements exist?">📋 Termination clauses</span>
+                        <span class="suggestion-chip" data-query="What are the liability and indemnification terms?">⚖️ Liability & risk</span>
+                        <span class="suggestion-chip" data-query="What intellectual property provisions are included?">🧠 IP rights</span>
+                    </div>
+                </div>
+            </div>
         </div>
         
-        <div class="results-section" id="resultsSection">
-            <div class="result-card">
-                <div class="result-header">
-                    <div class="result-title">📊 Search Results</div>
-                    <div class="result-info" id="resultInfo"></div>
-                </div>
-                <div class="result-content" id="resultContent"></div>
-            </div>
-            
-            <!-- Sources Section - Now First -->
-            <div class="sources-card" id="sourcesSection" style="display: none;">
-                <div class="sources-header">
-                    <div class="sources-title">
-                        📋 <span id="sourcesTitle">Document Sources</span>
-                    </div>
-                    <div class="sources-subtitle">Click any source to expand full text</div>
-                </div>
-                <div id="sourcesList"></div>
-            </div>
-            
-            <!-- AI Analysis Section - Now Second -->
-            <div class="analysis-card" id="analysisSection" style="display: none;">
-                <div class="analysis-header">
-                    <div class="analysis-title">🤖 AI Analysis</div>
-                    <div class="analysis-subtitle">Synthesized insights from your documents</div>
-                </div>
-                <div id="analysisContent"></div>
-            </div>
-            
-        </div>
-    </div>
+    </div> <!-- main-container -->
 
     <script>
         let selectedFile = null;
@@ -1125,16 +1354,25 @@
         
         async function performSearch() {
             const query = document.getElementById('queryInput').value.trim();
-            if (!query) return;
+            const selectedModel = document.getElementById('modelSelect').value;
+            
+            if (!query) {
+                // Add subtle shake animation to indicate input needed
+                const inputContainer = document.querySelector('.modern-input-container');
+                inputContainer.style.animation = 'shake 0.3s ease-in-out';
+                setTimeout(() => {
+                    inputContainer.style.animation = '';
+                }, 300);
+                return;
+            }
             
             const searchButton = document.getElementById('searchButton');
             const uploadProgressArea = document.getElementById('uploadProgressArea');
             const uploadProgressList = document.getElementById('uploadProgressList');
             
-            // Disable button and show search progress
+            // Add loading state to button
             searchButton.disabled = true;
-            const searchButtonText = searchButton.querySelector('span');
-            searchButtonText.textContent = 'Searching...';
+            searchButton.classList.add('loading');
             
             // Show search progress
             uploadProgressArea.style.display = 'block';
@@ -1164,7 +1402,8 @@
                     },
                     body: JSON.stringify({
                         question: query,
-                        k: 10
+                        k: 10,
+                        model: selectedModel
                     })
                 });
                 
@@ -1192,8 +1431,7 @@
                 showError(`Error: ${error.message}`);
             } finally {
                 searchButton.disabled = false;
-                const searchButtonText = searchButton.querySelector('span');
-                searchButtonText.textContent = 'Search';
+                searchButton.classList.remove('loading');
             }
         }
         
@@ -1259,28 +1497,35 @@
             }
 
             // Display AI analysis second
-            if (result.answer || (result.llm_answer && !result.llm_answer.includes('Error') && !result.llm_answer.includes('unavailable'))) {
+            if (result.llm_answer && !result.llm_answer.includes('Error') && !result.llm_answer.includes('unavailable')) {
                 document.getElementById('analysisSection').style.display = 'block';
                 
                 let analysisHtml = '';
                 
-                // Add LLM synthesis first (if available and clean)
-                if (result.llm_answer && !result.llm_answer.includes('Error') && !result.llm_answer.includes('unavailable')) {
-                    analysisHtml += `<h4 style="color: #1a202c; margin-bottom: 1rem; font-size: 16px; font-weight: 700;">🤖 AI Legal Analysis</h4>`;
-                    analysisHtml += `<div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 2rem; line-height: 1.6;">`;
-                    analysisHtml += formatAnswer(result.llm_answer);
+                // Add model info header if available
+                if (result.llm_model) {
+                    analysisHtml += `<div style="background: #e2e8f0; padding: 8px 16px; border-radius: 6px; margin-bottom: 16px; font-size: 12px; color: #4a5568; display: flex; align-items: center; gap: 6px;">`;
+                    analysisHtml += `<span style="font-weight: 600;">🤖 Model:</span> <code style="background: #cbd5e0; padding: 2px 6px; border-radius: 3px; font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;">${result.llm_model}</code>`;
                     analysisHtml += `</div>`;
                 }
                 
-                // Add RAG results last - always visible
-                if (result.answer) {
-                    analysisHtml += `<h4 style="color: #1a202c; margin: 2rem 0 1rem 0; font-size: 16px; font-weight: 700;">📋 RAG Results</h4>`;
-                    analysisHtml += `<div style="background: #f9f9f9; padding: 20px; border-radius: 8px; border-left: 3px solid #cbd5e0; font-size: 14px; line-height: 1.6;">`;
-                    analysisHtml += formatAnswer(result.answer);
-                    analysisHtml += `</div>`;
-                }
+                analysisHtml += `<div style="background: #f8f9fa; padding: 20px; border-radius: 8px; line-height: 1.6;">`;
+                analysisHtml += formatAnswer(result.llm_answer);
+                analysisHtml += `</div>`;
                 
                 document.getElementById('analysisContent').innerHTML = analysisHtml;
+            }
+
+            // Display RAG results in separate card - always visible
+            if (result.answer) {
+                document.getElementById('ragSection').style.display = 'block';
+                
+                let ragHtml = '';
+                ragHtml += `<div style="background: #f9f9f9; padding: 20px; border-radius: 8px; border-left: 3px solid #cbd5e0; font-size: 14px; line-height: 1.6;">`;
+                ragHtml += formatAnswer(result.answer);
+                ragHtml += `</div>`;
+                
+                document.getElementById('ragContent').innerHTML = ragHtml;
             }
         }
         
@@ -1309,7 +1554,7 @@
                 const lines = match.trim().split('\n');
                 if (lines.length < 2) return match;
                 
-                let tableHtml = '<table class="formatted-table">';
+                let tableHtml = '<div class="table-container"><table class="formatted-table">';
                 
                 // Process each line
                 for (let i = 0; i < lines.length; i++) {
@@ -1334,7 +1579,7 @@
                     tableHtml += '</tr>';
                 }
                 
-                tableHtml += '</table>';
+                tableHtml += '</table></div>';
                 return tableHtml;
             });
             
@@ -1391,5 +1636,6 @@
         }
         
     </script>
+
 </body>
 </html>

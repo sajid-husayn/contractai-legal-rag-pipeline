@@ -59,6 +59,7 @@ class HierarchicalSource(BaseModel):
 class QueryResponse(BaseModel):
     answer: str
     llm_answer: Optional[str] = None
+    llm_model: Optional[str] = None
     sources: List[HierarchicalSource]
     query_time: str
     total_results: int
@@ -189,16 +190,26 @@ async def query_documents(request: QueryRequest):
         
         # Generate LLM synthesis
         llm_answer = None
+        llm_model = None
         if search_results and len(sources) > 0:
             try:
-                llm_answer = grok_synthesis_service.synthesize_answer(request.question, search_results)
+                synthesis_result = grok_synthesis_service.synthesize_answer(request.question, search_results)
+                if isinstance(synthesis_result, dict):
+                    llm_answer = synthesis_result.get("answer")
+                    llm_model = synthesis_result.get("model")
+                else:
+                    # Backward compatibility
+                    llm_answer = synthesis_result
+                    llm_model = "openai/gpt-oss-20b"
             except Exception as e:
                 logger.error(f"Error in LLM synthesis: {e}")
                 llm_answer = f"LLM synthesis error: {str(e)}"
+                llm_model = "openai/gpt-oss-20b"
         
         return QueryResponse(
             answer=answer,
             llm_answer=llm_answer,
+            llm_model=llm_model,
             sources=sources,
             query_time=datetime.now().isoformat(),
             total_results=len(search_results),
