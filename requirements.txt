@@ -21,5 +21,6 @@ langchain-community>=0.0.10
 # For production deployment
 gunicorn>=21.0.0
 
-# LLM for synthesis - Grok API
+# LLM for synthesis - Groq API
 openai>=1.0.0
+groq>=0.4.0
