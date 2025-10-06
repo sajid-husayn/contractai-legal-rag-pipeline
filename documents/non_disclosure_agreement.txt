@@ -1,0 +1,135 @@
+MUTUAL NON-DISCLOSURE AGREEMENT
+
+This Mutual Non-Disclosure Agreement ("Agreement") is entered into on February 15, 2024, between DataFlow Systems LLC, a California limited liability company ("Company A"), and InnovateTech Solutions Inc., a New York corporation ("Company B").
+
+RECITALS
+
+WHEREAS, the parties wish to explore a potential business relationship and may disclose certain confidential and proprietary information to each other; and
+
+WHEREAS, the parties desire to protect the confidentiality of such information;
+
+NOW, THEREFORE, in consideration of the mutual covenants contained herein, the parties agree as follows:
+
+ARTICLE 1 - DEFINITION OF CONFIDENTIAL INFORMATION
+
+1.1 Confidential Information Defined
+"Confidential Information" means any and all non-public, confidential, or proprietary information disclosed by one party ("Disclosing Party") to the other party ("Receiving Party"), whether orally, in writing, or in any other form, including but not limited to:
+
+a) Technical data, software, source code, algorithms, and technical specifications
+b) Business plans, financial information, pricing strategies, and revenue data
+c) Customer lists, supplier information, and market research
+d) Trade secrets, know-how, and proprietary processes
+e) Product development plans and roadmaps
+f) Marketing strategies and competitive analysis
+g) Personnel information and organizational structures
+
+1.2 Exclusions from Confidential Information
+Confidential Information shall not include information that:
+a) Is or becomes generally available to the public through no breach of this Agreement
+b) Was known to the Receiving Party prior to disclosure
+c) Is independently developed by the Receiving Party without use of Confidential Information
+d) Is rightfully received from a third party without breach of confidentiality
+
+ARTICLE 2 - OBLIGATIONS OF RECEIVING PARTY
+
+2.1 Non-Disclosure
+The Receiving Party agrees to:
+a) Hold all Confidential Information in strict confidence
+b) Not disclose Confidential Information to any third party without prior written consent
+c) Use Confidential Information solely for evaluating potential business opportunities
+d) Take reasonable precautions to protect the confidentiality of the information
+
+2.2 Standard of Care
+The Receiving Party shall use at least the same degree of care in protecting Confidential Information as it uses to protect its own confidential information, but in no event less than reasonable care.
+
+2.3 Limited Disclosure
+The Receiving Party may disclose Confidential Information only to employees, consultants, and advisors who:
+a) Have a legitimate need to know for the purposes of this Agreement
+b) Have been informed of the confidential nature of the information
+c) Are bound by confidentiality obligations at least as restrictive as those contained herein
+
+ARTICLE 3 - PERMITTED DISCLOSURES
+
+3.1 Legal Requirements
+Nothing in this Agreement shall prevent disclosure of Confidential Information if required by law, court order, or government regulation, provided that:
+a) The Receiving Party gives prompt written notice to the Disclosing Party
+b) The Receiving Party cooperates in any effort by the Disclosing Party to seek protection
+c) Disclosure is limited to the minimum required by law
+
+3.2 Equitable Relief
+The Receiving Party acknowledges that breach of this Agreement may cause irreparable harm for which monetary damages would be inadequate. Therefore, the Disclosing Party shall be entitled to seek equitable relief, including injunction and specific performance.
+
+ARTICLE 4 - RETURN OF INFORMATION
+
+4.1 Return or Destruction
+Upon written request by the Disclosing Party, or upon termination of this Agreement, the Receiving Party shall:
+a) Return all documents and materials containing Confidential Information
+b) Delete all electronic copies of Confidential Information
+c) Provide written certification of compliance with this section
+
+4.2 Retention Exception
+Notwithstanding the above, the Receiving Party may retain copies of Confidential Information as required by law or regulation, subject to continued confidentiality obligations.
+
+ARTICLE 5 - INTELLECTUAL PROPERTY
+
+5.1 No License Granted
+This Agreement does not grant any license or right to use any patents, copyrights, trademarks, or other intellectual property rights of either party.
+
+5.2 Ownership
+All Confidential Information remains the property of the Disclosing Party. No transfer of ownership is intended or implied by this Agreement.
+
+ARTICLE 6 - TERM AND TERMINATION
+
+6.1 Term
+This Agreement shall commence on the date first written above and shall continue for a period of three (3) years, unless terminated earlier by mutual written consent.
+
+6.2 Survival
+The obligations of confidentiality shall survive termination of this Agreement for a period of five (5) years from the date of termination.
+
+6.3 Termination Rights
+Either party may terminate this Agreement at any time by providing thirty (30) days written notice to the other party.
+
+ARTICLE 7 - NO OBLIGATION TO DISCLOSE
+
+7.1 Voluntary Disclosure
+Nothing in this Agreement obligates either party to disclose any particular information or to enter into any business relationship.
+
+7.2 No Warranty
+All Confidential Information is provided "AS IS" without warranty of any kind, express or implied.
+
+ARTICLE 8 - GENERAL PROVISIONS
+
+8.1 Governing Law
+This Agreement shall be governed by the laws of the State of California, without regard to conflicts of law principles.
+
+8.2 Jurisdiction
+Any disputes arising under this Agreement shall be subject to the exclusive jurisdiction of the courts of California.
+
+8.3 Entire Agreement
+This Agreement constitutes the entire agreement between the parties regarding the subject matter hereof and supersedes all prior agreements and understandings.
+
+8.4 Amendment
+This Agreement may only be amended by a written instrument signed by both parties.
+
+8.5 Severability
+If any provision of this Agreement is held invalid or unenforceable, the remainder shall continue in full force and effect.
+
+8.6 Counterparts
+This Agreement may be executed in counterparts, each of which shall be deemed an original and all of which together shall constitute one agreement.
+
+IN WITNESS WHEREOF, the parties have executed this Agreement as of the date first written above.
+
+DATAFLOW SYSTEMS LLC                        INNOVATETECH SOLUTIONS INC.
+
+By: _________________________              By: _________________________
+    Jennifer Martinez                           Robert Thompson
+    Chief Executive Officer                     Chief Executive Officer
+
+Date: _______________                      Date: _______________
+
+
+WITNESS:
+
+_________________________              _________________________
+Print Name: Laura Kim                     Print Name: David Chen
+Title: General Counsel                   Title: Legal Director

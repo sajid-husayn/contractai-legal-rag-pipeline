@@ -1,0 +1,25 @@
+# 2025 Legal Document RAG Pipeline - Docling + Qdrant + HuggingFace
+fastapi>=0.100.0
+uvicorn[standard]>=0.30.0
+langchain-qdrant>=0.2.1
+langchain-huggingface>=0.1.0
+sentence-transformers>=2.0.0
+PyPDF2==3.0.1
+python-multipart>=0.0.10
+pydantic>=2.0.0
+python-dotenv>=1.0.0
+qdrant-client>=1.10.0
+
+# Docling for structure-aware document processing
+docling>=1.5.0
+docling-core>=1.8.0
+
+# Additional LangChain dependencies
+langchain>=0.1.0
+langchain-community>=0.0.10
+
+# For production deployment
+gunicorn>=21.0.0
+
+# LLM for synthesis - Grok API
+openai>=1.0.0

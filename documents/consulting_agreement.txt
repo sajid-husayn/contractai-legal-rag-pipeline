@@ -1,0 +1,194 @@
+INDEPENDENT CONSULTING AGREEMENT
+
+This Independent Consulting Agreement ("Agreement") is entered into on April 5, 2024, between StartupAccelerator Ventures LLC, a Delaware limited liability company ("Company"), and Dr. Patricia Williams, an individual consultant ("Consultant").
+
+ARTICLE 1 - CONSULTING SERVICES
+
+1.1 Engagement
+Company hereby engages Consultant to provide strategic consulting services in the areas of business development, market analysis, and investor relations.
+
+1.2 Specific Services
+Consultant agrees to provide the following services:
+a) Strategic business planning and roadmap development
+b) Market research and competitive analysis
+c) Investor pitch deck preparation and presentation coaching
+d) Due diligence support for funding rounds
+e) Partnership and alliance strategy development
+f) Board meeting preparation and advisory support
+
+1.3 Deliverables
+Consultant shall provide the following deliverables:
+a) Comprehensive market analysis report within 45 days
+b) Strategic business plan update within 60 days
+c) Investor presentation materials within 30 days
+d) Monthly progress reports and recommendations
+e) Quarterly board meeting support and materials
+
+1.4 Performance Standards
+All services shall be performed with the highest degree of professional competence and in accordance with industry best practices.
+
+ARTICLE 2 - COMPENSATION AND PAYMENT
+
+2.1 Consulting Fees
+Company shall pay Consultant a monthly retainer of $15,000 for the services outlined herein.
+
+2.2 Equity Compensation
+In addition to the monthly retainer, Consultant shall receive equity compensation in the form of:
+a) 0.5% equity stake in the Company (subject to vesting)
+b) Vesting schedule: 25% after 12 months, remainder monthly over 36 months
+c) Standard acceleration provisions upon change of control
+
+2.3 Expense Reimbursement
+Company shall reimburse Consultant for reasonable pre-approved business expenses including:
+a) Travel and transportation costs
+b) Accommodation expenses for business travel
+c) Communication and technology expenses
+d) Materials and supplies necessary for deliverables
+
+2.4 Payment Terms
+Monthly retainer fees shall be paid within fifteen (15) days of each month-end. Expense reimbursements shall be paid within thirty (30) days of submission with appropriate documentation.
+
+ARTICLE 3 - TERM AND TERMINATION
+
+3.1 Term
+This Agreement shall commence on May 1, 2024, and shall continue for an initial term of twelve (12) months, automatically renewable for additional six-month periods unless terminated.
+
+3.2 Termination by Either Party
+Either party may terminate this Agreement with sixty (60) days written notice without cause.
+
+3.3 Termination for Cause
+Either party may terminate this Agreement immediately for cause, including:
+a) Material breach of this Agreement after 30-day cure period
+b) Gross negligence or willful misconduct
+c) Conviction of felony or crime involving moral turpitude
+d) Breach of confidentiality or non-compete provisions
+
+3.4 Effect of Termination
+Upon termination:
+a) Consultant shall complete work in progress and deliver all materials
+b) Company shall pay all accrued fees and approved expenses
+c) Equity vesting shall cease except for change of control provisions
+d) Confidentiality and non-compete obligations shall survive
+
+ARTICLE 4 - INTELLECTUAL PROPERTY
+
+4.1 Work Product Ownership
+All work products, methodologies, analyses, and materials created specifically for Company shall be owned exclusively by Company upon payment of fees.
+
+4.2 Consultant Retained Rights
+Consultant retains ownership of:
+a) Pre-existing intellectual property and methodologies
+b) General knowledge and experience gained
+c) Industry contacts and relationships (subject to confidentiality)
+
+4.3 License Back
+Company grants Consultant a non-exclusive license to use general methodologies and frameworks developed during the engagement for other consulting work, provided such use does not disclose Company confidential information.
+
+ARTICLE 5 - CONFIDENTIALITY AND NON-COMPETE
+
+5.1 Confidential Information
+Consultant acknowledges access to confidential information including:
+a) Business strategies and financial information
+b) Customer and investor information
+c) Product development plans and trade secrets
+d) Personnel information and compensation data
+e) Market research and competitive intelligence
+
+5.2 Confidentiality Obligations
+Consultant agrees to:
+a) Maintain strict confidentiality of all proprietary information
+b) Use confidential information solely for Company's benefit
+c) Not disclose information to competitors or third parties
+d) Implement appropriate security measures for information protection
+
+5.3 Non-Compete Restrictions
+During the term and for twelve (12) months thereafter, Consultant shall not:
+a) Provide similar services to direct competitors in the same market segment
+b) Solicit Company employees, consultants, or contractors
+c) Divert or attempt to divert Company customers or business opportunities
+
+5.4 Non-Solicitation
+For eighteen (18) months following termination, Consultant shall not directly or indirectly solicit or recruit any Company employees or consultants.
+
+ARTICLE 6 - INDEPENDENT CONTRACTOR RELATIONSHIP
+
+6.1 Independent Status
+Consultant is an independent contractor and not an employee, partner, or agent of Company.
+
+6.2 No Benefits
+Consultant is not entitled to Company benefits including health insurance, retirement plans, or paid leave.
+
+6.3 Tax Responsibilities
+Consultant is responsible for all tax obligations and shall provide appropriate tax documentation (Form W-9/1099).
+
+6.4 Insurance
+Consultant shall maintain professional liability insurance with minimum coverage of $1,000,000.
+
+ARTICLE 7 - WARRANTIES AND REPRESENTATIONS
+
+7.1 Consultant Warranties
+Consultant represents and warrants:
+a) Authority to enter into this Agreement
+b) No conflicts with existing obligations or agreements
+c) Professional qualifications and expertise to perform services
+d) Compliance with all applicable laws and regulations
+
+7.2 Company Warranties
+Company represents and warrants:
+a) Authority to enter into this Agreement and grant equity compensation
+b) Accurate disclosure of material business information
+c) Good standing and legal existence
+
+ARTICLE 8 - LIMITATION OF LIABILITY
+
+8.1 Liability Cap
+Consultant's total liability under this Agreement shall not exceed the total compensation paid in the twelve (12) months preceding the claim.
+
+8.2 Excluded Damages
+Neither party shall be liable for consequential, incidental, or punitive damages, except for breach of confidentiality obligations.
+
+ARTICLE 9 - DISPUTE RESOLUTION
+
+9.1 Mediation
+The parties shall attempt to resolve disputes through good faith mediation before pursuing other remedies.
+
+9.2 Arbitration
+Unresolved disputes shall be settled through binding arbitration under AAA Commercial Arbitration Rules in San Francisco, California.
+
+9.3 Equitable Relief
+Notwithstanding arbitration provisions, either party may seek equitable relief for breach of confidentiality or non-compete obligations.
+
+ARTICLE 10 - GENERAL PROVISIONS
+
+10.1 Governing Law
+This Agreement shall be governed by the laws of the State of Delaware.
+
+10.2 Entire Agreement
+This Agreement constitutes the entire understanding between the parties and supersedes all prior agreements.
+
+10.3 Amendment
+This Agreement may only be modified by written agreement signed by both parties.
+
+10.4 Severability
+If any provision is deemed invalid, the remaining provisions shall remain enforceable.
+
+10.5 Assignment
+This Agreement may not be assigned without written consent, except Company may assign to affiliates or successors.
+
+IN WITNESS WHEREOF, the parties have executed this Agreement as of the date first written above.
+
+STARTUPACCELERATOR VENTURES LLC              CONSULTANT
+
+By: _________________________              _________________________
+    Jonathan Miller                        Dr. Patricia Williams
+    Managing Partner                       Independent Consultant
+
+Date: _______________                      Date: _______________
+
+
+WITNESS:
+
+_________________________
+Catherine Burke
+Chief Operating Officer
+StartupAccelerator Ventures LLC

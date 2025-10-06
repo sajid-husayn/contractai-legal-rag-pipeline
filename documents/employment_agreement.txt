@@ -1,0 +1,126 @@
+EMPLOYMENT AGREEMENT
+
+This Employment Agreement ("Agreement") is entered into on January 1, 2024, between TechCorp Industries Inc., a Delaware corporation ("Company"), and Sarah Johnson ("Employee").
+
+ARTICLE 1 - EMPLOYMENT AND DUTIES
+
+1.1 Position and Responsibilities
+The Company hereby employs Employee as Senior Software Engineer. Employee shall report to the Chief Technology Officer and shall perform such duties and responsibilities as may be assigned by the Company.
+
+1.2 Full-Time Employment
+Employee agrees to devote full business time, attention, and energies to the business of the Company and shall not engage in any other business activity without the prior written consent of the Company.
+
+ARTICLE 2 - COMPENSATION AND BENEFITS
+
+2.1 Base Salary
+Employee will receive a base salary of $120,000 per year, payable bi-weekly in accordance with the Company's standard payroll procedures.
+
+2.2 Performance Bonus
+Employee may be eligible for an annual performance bonus based on individual and company performance, with a target bonus of 15% of base salary.
+
+2.3 Benefits Package
+Employee is entitled to participate in the Company's benefit programs including:
+- Health insurance with 90% premium coverage by Company
+- Dental and vision insurance
+- 401(k) retirement plan with 4% company matching
+- 20 days paid vacation annually
+- 10 sick days annually
+- Professional development budget of $3,000 per year
+
+ARTICLE 3 - CONFIDENTIAL INFORMATION
+
+3.1 Definition of Confidential Information
+Employee acknowledges that during employment, they will have access to confidential and proprietary information including but not limited to:
+- Trade secrets and proprietary software code
+- Customer lists and contact information
+- Financial information and business strategies
+- Product development plans and technical specifications
+- Marketing strategies and competitive analysis
+
+3.2 Confidentiality Obligations
+Employee agrees to:
+- Maintain strict confidentiality of all proprietary information
+- Not disclose confidential information to any third party
+- Not use confidential information for personal benefit
+- Return all confidential materials upon termination of employment
+
+3.3 Survival of Obligations
+The confidentiality obligations shall survive termination of this Agreement for a period of five (5) years.
+
+ARTICLE 4 - INTELLECTUAL PROPERTY
+
+4.1 Work Product Ownership
+All work products, inventions, discoveries, and intellectual property created by Employee during the course of employment shall be the exclusive property of the Company.
+
+4.2 Assignment of Rights
+Employee hereby assigns to the Company all rights, title, and interest in and to any work products, patents, copyrights, trademarks, and trade secrets developed during employment.
+
+4.3 Cooperation
+Employee agrees to cooperate with the Company in obtaining and maintaining intellectual property protection for work products.
+
+ARTICLE 5 - TERMINATION
+
+5.1 Termination by Company
+The Company may terminate this Agreement:
+- At any time with thirty (30) days written notice without cause
+- Immediately for cause, including but not limited to:
+  * Material breach of this Agreement
+  * Conviction of a felony or crime involving moral turpitude
+  * Willful misconduct or insubordination
+  * Violation of Company policies or confidentiality obligations
+  * Failure to perform duties after written warning
+
+5.2 Termination by Employee
+Employee may terminate this Agreement by providing thirty (30) days written notice to the Company.
+
+5.3 Severance Benefits
+If terminated by the Company without cause, Employee shall receive:
+- Continuation of base salary for sixty (60) days
+- COBRA health insurance premium payments for three (3) months
+- Accrued but unused vacation pay
+
+5.4 Return of Company Property
+Upon termination, Employee must immediately return all Company property including computers, mobile devices, access cards, and confidential documents.
+
+ARTICLE 6 - NON-COMPETE AND NON-SOLICITATION
+
+6.1 Non-Compete Restriction
+For twelve (12) months following termination, Employee shall not directly or indirectly compete with the Company's business within the geographic area where the Company conducts business.
+
+6.2 Non-Solicitation of Employees
+For eighteen (18) months following termination, Employee shall not solicit, recruit, or hire any Company employees or contractors.
+
+6.3 Non-Solicitation of Customers
+For twelve (12) months following termination, Employee shall not solicit or attempt to divert any Company customers or clients.
+
+ARTICLE 7 - DISPUTE RESOLUTION
+
+7.1 Arbitration
+Any disputes arising under this Agreement shall be resolved through binding arbitration in accordance with the rules of the American Arbitration Association.
+
+7.2 Governing Law
+This Agreement shall be governed by the laws of the State of Delaware, without regard to conflicts of law principles.
+
+ARTICLE 8 - MISCELLANEOUS
+
+8.1 Entire Agreement
+This Agreement constitutes the entire agreement between the parties and supersedes all prior negotiations, representations, or agreements.
+
+8.2 Amendment
+This Agreement may only be amended by written agreement signed by both parties.
+
+8.3 Severability
+If any provision of this Agreement is deemed invalid or unenforceable, the remaining provisions shall remain in full force and effect.
+
+8.4 Notice
+All notices required under this Agreement shall be in writing and delivered by certified mail, email, or personal delivery.
+
+IN WITNESS WHEREOF, the parties have executed this Agreement as of the date first written above.
+
+TECHCORP INDUSTRIES INC.                    EMPLOYEE
+
+By: _________________________              _________________________
+    Michael Chen                           Sarah Johnson
+    Chief Executive Officer                Employee
+
+Date: _______________                      Date: _______________

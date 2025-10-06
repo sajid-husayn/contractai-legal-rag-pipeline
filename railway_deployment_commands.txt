@@ -1,0 +1,34 @@
+Railway Deployment Commands for ContractAI Legal RAG Pipeline
+==============================================================
+
+1. Login to Railway (run this in your terminal):
+   railway login
+
+2. Initialize Railway project in the current directory:
+   cd /Users/sajidhussain/workspace/spector/legal_rag_pipeline
+   railway init
+
+3. Set environment variables:
+   railway variables set GROQ_API_KEY="your-groq-api-key"
+   railway variables set QDRANT_URL="your-qdrant-cloud-url"
+   railway variables set QDRANT_API_KEY="your-qdrant-api-key"
+   railway variables set COLLECTION_NAME="legal_documents_hierarchical"
+   railway variables set DEBUG="false"
+
+4. Deploy the application:
+   railway up
+
+5. Once deployed, you can:
+   - Get deployment URL: railway status
+   - View logs: railway logs
+   - Open in browser: railway open
+
+Files Ready for Deployment:
+- railway.toml: ✅ Configured with nixpacks, health check, and start command
+- requirements.txt: ✅ All dependencies listed
+- .env: ✅ Updated with all environment variables (will be replaced by Railway variables)
+- app/main.py: ✅ Updated with dotenv loading and health endpoint
+- app/docling_rag_service.py: ✅ Updated to use environment variables
+
+The application will be available at: https://[your-project-name].railway.app
+Health check endpoint: https://[your-project-name].railway.app/health

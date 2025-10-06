@@ -1,0 +1,35 @@
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+.pytest_cache/
+
+# Environment
+.env
+.venv
+venv/
+env/
+
+# Development
+.git
+.gitignore
+README.md
+.vscode/
+.idea/
+
+# Test documents (optional - include if you want test data)
+test_documents/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Backup files
+*_old.py
+*_backup.py

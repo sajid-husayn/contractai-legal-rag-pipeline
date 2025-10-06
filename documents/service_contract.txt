@@ -1,0 +1,176 @@
+PROFESSIONAL SERVICES AGREEMENT
+
+This Professional Services Agreement ("Agreement") is entered into on March 10, 2024, between CloudTech Enterprises Inc., a Texas corporation ("Client"), and DigitalSolutions Consulting LLC, a Delaware limited liability company ("Service Provider").
+
+ARTICLE 1 - SERVICES AND DELIVERABLES
+
+1.1 Scope of Services
+Service Provider agrees to provide the following professional services ("Services"):
+a) Cloud infrastructure migration and optimization
+b) Application modernization and containerization
+c) DevOps pipeline implementation and automation
+d) Security assessment and compliance implementation
+e) Staff training and knowledge transfer
+
+1.2 Deliverables
+Service Provider shall deliver the following specific deliverables:
+a) Cloud migration strategy document within 30 days
+b) Migrated production environment within 90 days
+c) Automated CI/CD pipeline within 60 days
+d) Security compliance report within 45 days
+e) Training documentation and sessions within 120 days
+
+1.3 Performance Standards
+All Services shall be performed in a professional and workmanlike manner in accordance with industry best practices and standards.
+
+ARTICLE 2 - PAYMENT TERMS AND COMPENSATION
+
+2.1 Total Project Fee
+The total fee for the Services shall be $485,000, payable according to the milestone schedule set forth in Exhibit A.
+
+2.2 Payment Schedule
+Client shall pay Service Provider as follows:
+a) $97,000 upon execution of this Agreement (20%)
+b) $97,000 upon completion of migration strategy (20%)
+c) $145,500 upon completion of infrastructure migration (30%)
+d) $97,000 upon completion of DevOps implementation (20%)
+e) $48,500 upon final delivery and acceptance (10%)
+
+2.3 Payment Terms
+Invoices shall be paid within thirty (30) days of receipt. Late payments shall incur interest at 1.5% per month or the maximum rate permitted by law, whichever is less.
+
+2.4 Expenses
+Client shall reimburse Service Provider for pre-approved reasonable expenses including travel, lodging, and third-party software licenses.
+
+2.5 Additional Services
+Any services beyond the scope defined herein shall be subject to a separate written agreement and additional compensation at Service Provider's standard rates.
+
+ARTICLE 3 - TIMELINE AND MILESTONES
+
+3.1 Project Duration
+The Services shall commence on April 1, 2024, and shall be completed by October 31, 2024, unless extended by mutual written agreement.
+
+3.2 Critical Milestones
+a) Week 4: Infrastructure assessment and migration plan completion
+b) Week 8: Development environment migration completion
+c) Week 12: Production environment migration completion
+d) Week 16: DevOps pipeline implementation completion
+e) Week 20: Security compliance and training completion
+
+3.3 Client Cooperation
+Client shall provide timely access to systems, personnel, and information necessary for Service Provider to perform the Services.
+
+ARTICLE 4 - INTELLECTUAL PROPERTY AND CONFIDENTIALITY
+
+4.1 Work Product Ownership
+All work products, methodologies, and deliverables created specifically for Client under this Agreement shall be owned by Client upon full payment.
+
+4.2 Pre-Existing IP
+Service Provider retains ownership of pre-existing methodologies, tools, and general knowledge developed prior to or independently of this Agreement.
+
+4.3 Confidential Information
+Both parties acknowledge they may receive confidential information and agree to:
+a) Maintain strict confidentiality of all proprietary information
+b) Use confidential information solely for purposes of this Agreement
+c) Return or destroy confidential information upon termination
+
+4.4 Data Security
+Service Provider shall implement appropriate security measures to protect Client's data and comply with applicable data protection regulations.
+
+ARTICLE 5 - WARRANTIES AND REPRESENTATIONS
+
+5.1 Service Provider Warranties
+Service Provider warrants that:
+a) It has the necessary skills, experience, and resources to perform the Services
+b) The Services will be performed in accordance with industry standards
+c) The deliverables will be free from material defects for 90 days after delivery
+d) It has the right to enter into this Agreement
+
+5.2 Client Warranties
+Client warrants that:
+a) It has the authority to enter into this Agreement
+b) It will provide accurate and complete information necessary for the Services
+c) It owns or has rights to all systems and data to be accessed
+
+5.3 Warranty Remedies
+For breach of warranty, Service Provider's sole obligation shall be to re-perform the defective Services at no additional cost.
+
+ARTICLE 6 - LIMITATION OF LIABILITY
+
+6.1 Liability Cap
+In no event shall either party's total liability under this Agreement exceed the total amount paid or payable under this Agreement.
+
+6.2 Consequential Damages
+Neither party shall be liable for indirect, incidental, special, consequential, or punitive damages, including lost profits or business interruption.
+
+6.3 Exceptions
+The limitations in this Article shall not apply to:
+a) Breach of confidentiality obligations
+b) Indemnification obligations
+c) Gross negligence or willful misconduct
+
+ARTICLE 7 - TERMINATION
+
+7.1 Termination for Convenience
+Either party may terminate this Agreement with thirty (30) days written notice.
+
+7.2 Termination for Cause
+Either party may terminate immediately upon written notice if the other party:
+a) Materially breaches this Agreement and fails to cure within 15 days
+b) Becomes insolvent or files for bankruptcy
+c) Ceases to conduct business in the ordinary course
+
+7.3 Effect of Termination
+Upon termination:
+a) Service Provider shall deliver all completed work products
+b) Client shall pay for Services performed through the termination date
+c) Both parties shall return confidential information
+
+ARTICLE 8 - INDEMNIFICATION
+
+8.1 Mutual Indemnification
+Each party shall indemnify the other against third-party claims arising from:
+a) Breach of this Agreement
+b) Negligent or willful acts
+c) Violation of applicable laws
+
+8.2 IP Indemnification
+Service Provider shall indemnify Client against claims that the deliverables infringe third-party intellectual property rights.
+
+ARTICLE 9 - GENERAL PROVISIONS
+
+9.1 Independent Contractor
+Service Provider is an independent contractor and not an employee, agent, or partner of Client.
+
+9.2 Governing Law
+This Agreement shall be governed by the laws of the State of Texas.
+
+9.3 Dispute Resolution
+Any disputes shall be resolved through binding arbitration in Dallas, Texas, under AAA Commercial Arbitration Rules.
+
+9.4 Force Majeure
+Neither party shall be liable for delays caused by circumstances beyond their reasonable control.
+
+9.5 Entire Agreement
+This Agreement, including all exhibits, constitutes the entire agreement between the parties.
+
+9.6 Amendment
+This Agreement may only be modified by written agreement signed by both parties.
+
+IN WITNESS WHEREOF, the parties have executed this Agreement as of the date first written above.
+
+CLOUDTECH ENTERPRISES INC.                  DIGITALSOLUTIONS CONSULTING LLC
+
+By: _________________________              By: _________________________
+    Amanda Rodriguez                           Thomas Wilson
+    Chief Technology Officer                   Managing Partner
+
+Date: _______________                      Date: _______________
+
+
+APPROVED BY:
+
+_________________________              _________________________
+Maria Santos                             Jessica Lee
+Chief Financial Officer                  Chief Operating Officer
+CloudTech Enterprises Inc.               DigitalSolutions Consulting LLC

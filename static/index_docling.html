@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Document RAG Pipeline - 4-Method Comparison</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .status-bar {
+            background: #f8f9fa;
+            padding: 15px 30px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .status-info {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+        
+        .status-indicator {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+        
+        .status-healthy {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .main-content {
+            padding: 30px;
+        }
+        
+        .upload-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 2px dashed #dee2e6;
+            text-align: center;
+        }
+        
+        .upload-section h3 {
+            margin-top: 0;
+            color: #495057;
+        }
+        
+        .collection-selector {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .collection-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .collection-option:hover {
+            border-color: #007bff;
+            background: #f8f9ff;
+        }
+        
+        .collection-option.selected {
+            border-color: #007bff;
+            background: #007bff;
+            color: white;
+        }
+        
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            margin: 20px 0;
+        }
+        
+        .file-input {
+            position: absolute;
+            left: -9999px;
+        }
+        
+        .file-label {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #007bff;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .file-label:hover {
+            background: #0056b3;
+        }
+        
+        .upload-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: 15px;
+            transition: background 0.3s ease;
+        }
+        
+        .upload-btn:hover {
+            background: #218838;
+        }
+        
+        .upload-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        .query-section {
+            margin-bottom: 30px;
+        }
+        
+        .query-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .query-input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .query-input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        
+        .query-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+        
+        .query-btn:hover {
+            background: #0056b3;
+        }
+        
+        .query-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        .sample-queries {
+            margin-bottom: 20px;
+        }
+        
+        .sample-queries h4 {
+            margin-bottom: 10px;
+            color: #495057;
+        }
+        
+        .sample-query {
+            display: inline-block;
+            background: #e9ecef;
+            padding: 8px 15px;
+            margin: 5px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+        
+        .sample-query:hover {
+            background: #007bff;
+            color: white;
+        }
+        
+        .results-container {
+            margin-top: 30px;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .method-result {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            background: white;
+            min-height: 400px;
+        }
+        
+        .method-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f8f9fa;
+        }
+        
+        .method-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .method-info {
+            font-size: 0.85em;
+            color: #6c757d;
+            text-align: right;
+        }
+        
+        .method-answer {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        
+        .method-answer.expandable {
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .method-answer.collapsed {
+            max-height: 200px;
+            overflow: hidden;
+        }
+        
+        .expand-indicator {
+            position: absolute;
+            bottom: 5px;
+            right: 10px;
+            background: #007bff;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+        }
+        
+        .sources-section h5 {
+            margin: 0 0 10px 0;
+            color: #495057;
+            font-size: 1em;
+        }
+        
+        .source-item {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+        
+        .source-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .source-document {
+            font-weight: 600;
+            color: #007bff;
+        }
+        
+        .source-confidence {
+            background: #28a745;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+        }
+        
+        .source-excerpt {
+            color: #6c757d;
+            font-style: italic;
+        }
+        
+        .hierarchical-source {
+            border-left: 4px solid #007bff;
+        }
+        
+        .source-meta {
+            font-size: 0.8em;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .query-input-group {
+                flex-direction: column;
+            }
+            
+            .status-bar {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .collection-selector {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏛️ Legal Document RAG Pipeline</h1>
+            <p>Advanced Document Analysis with 4-Method Comparison: Standard RAG vs Intent Understanding vs LLM Synthesis vs Hierarchical Docling</p>
+        </div>
+        
+        <div class="status-bar">
+            <div class="status-info" id="statusInfo">
+                <span class="status-indicator status-healthy">System Healthy</span>
+                <span id="collectionInfo">Loading collection info...</span>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <!-- Upload Section -->
+            <div class="upload-section">
+                <h3>📄 Upload Legal Documents</h3>
+                <p>Upload PDF documents to analyze with advanced RAG techniques</p>
+                
+                <div class="collection-selector">
+                    <div class="collection-option selected" data-collection="standard">
+                        <input type="radio" name="collection" value="standard" checked>
+                        <label>Standard Collection</label>
+                    </div>
+                    <div class="collection-option" data-collection="hierarchical">
+                        <input type="radio" name="collection" value="hierarchical">
+                        <label>🔗 Hierarchical Collection (Docling)</label>
+                    </div>
+                </div>
+                
+                <div class="file-input-wrapper">
+                    <input type="file" id="fileInput" class="file-input" accept=".pdf" />
+                    <label for="fileInput" class="file-label">Choose PDF File</label>
+                </div>
+                <button id="uploadBtn" class="upload-btn" disabled>📤 Upload Document</button>
+                
+                <div id="uploadStatus"></div>
+            </div>
+            
+            <!-- Query Section -->
+            <div class="query-section">
+                <h3>🔍 Query Documents</h3>
+                
+                <div class="sample-queries">
+                    <h4>Common Law Firm Queries:</h4>
+                    <span class="sample-query" data-query="What are the payment terms and billing arrangements in these contracts?">💰 Payment & Billing Terms</span>
+                    <span class="sample-query" data-query="What termination clauses and notice requirements exist?">📋 Termination & Notice</span>
+                    <span class="sample-query" data-query="What indemnification and liability provisions are included?">⚖️ Liability & Indemnification</span>
+                    <span class="sample-query" data-query="What intellectual property ownership and licensing terms are specified?">🧠 IP Ownership & Licensing</span>
+                    <span class="sample-query" data-query="What governing law and dispute resolution mechanisms apply?">🏛️ Governing Law & Disputes</span>
+                    <span class="sample-query" data-query="What confidentiality and non-disclosure obligations are established?">🔒 Confidentiality & NDAs</span>
+                </div>
+                
+                <div class="query-input-group">
+                    <input type="text" id="queryInput" class="query-input" placeholder="Enter your question about the legal documents..." />
+                    <button id="queryBtn" class="query-btn">🚀 Query Both Methods</button>
+                </div>
+            </div>
+            
+            <!-- Results Section -->
+            <div class="results-container" id="resultsContainer" style="display: none;">
+                <h3>📊 RAG vs RAG+LLM Comparison</h3>
+                <div class="comparison-grid" id="comparisonGrid" style="grid-template-columns: 1fr 1fr;">
+                    <!-- Structure-Aware RAG -->
+                    <div class="method-result">
+                        <div class="method-header">
+                            <h4 class="method-title">
+                                🔗 Structure-Aware RAG
+                                <span style="background: #007bff; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7em;">HIERARCHICAL</span>
+                            </h4>
+                            <div class="method-info" id="doclingInfo"></div>
+                        </div>
+                        <div class="method-answer expandable collapsed" id="doclingAnswer">
+                            Click "Query Both Methods" to see results
+                        </div>
+                        <div class="sources-section">
+                            <h5>📚 Sources</h5>
+                            <div id="doclingSources"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Structure-Aware RAG + LLM Synthesis -->
+                    <div class="method-result">
+                        <div class="method-header">
+                            <h4 class="method-title">
+                                🤖 Structure-Aware RAG + LLM
+                                <span style="background: #28a745; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7em;">ENHANCED</span>
+                            </h4>
+                            <div class="method-info" id="llmInfo"></div>
+                        </div>
+                        <div class="method-answer expandable collapsed" id="llmAnswer">
+                            Click "Query Both Methods" to see results
+                        </div>
+                        <div class="sources-section">
+                            <h5>📚 Sources</h5>
+                            <div id="llmSources"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedFile = null;
+        let selectedCollection = 'standard';
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSystemStatus();
+            setupEventListeners();
+        });
+        
+        function setupEventListeners() {
+            // File input
+            document.getElementById('fileInput').addEventListener('change', handleFileSelection);
+            
+            // Upload button
+            document.getElementById('uploadBtn').addEventListener('click', uploadDocument);
+            
+            // Query button
+            document.getElementById('queryBtn').addEventListener('click', queryAllMethods);
+            
+            // Query input enter key
+            document.getElementById('queryInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    queryAllMethods();
+                }
+            });
+            
+            // Sample queries
+            document.querySelectorAll('.sample-query').forEach(query => {
+                query.addEventListener('click', function() {
+                    document.getElementById('queryInput').value = this.dataset.query;
+                });
+            });
+            
+            // Collection selector
+            document.querySelectorAll('.collection-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.collection-option').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedCollection = this.dataset.collection;
+                    this.querySelector('input').checked = true;
+                });
+            });
+            
+            // Expandable answers
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('expandable')) {
+                    e.target.classList.toggle('collapsed');
+                }
+            });
+        }
+        
+        async function loadSystemStatus() {
+            try {
+                const [standardHealth, hierarchicalHealth] = await Promise.all([
+                    fetch('/health').then(r => r.json()),
+                    fetch('/health_hierarchical').then(r => r.json())
+                ]);
+                
+                const standardCount = standardHealth.collection?.points_count || 0;
+                const hierarchicalCount = hierarchicalHealth.collection?.total_chunks || 0;
+                
+                document.getElementById('collectionInfo').innerHTML = 
+                    `Standard: ${standardCount} chunks | Hierarchical: ${hierarchicalCount} chunks | LangChain + Qdrant + Sentence Transformers + Docling`;
+            } catch (error) {
+                console.error('Error loading system status:', error);
+                document.getElementById('collectionInfo').textContent = 'Error loading system status';
+            }
+        }
+        
+        function handleFileSelection(event) {
+            selectedFile = event.target.files[0];
+            const uploadBtn = document.getElementById('uploadBtn');
+            
+            if (selectedFile && selectedFile.type === 'application/pdf') {
+                uploadBtn.disabled = false;
+                uploadBtn.textContent = `📤 Upload ${selectedFile.name}`;
+            } else {
+                uploadBtn.disabled = true;
+                uploadBtn.textContent = '📤 Upload Document';
+                if (selectedFile) {
+                    showMessage('Please select a PDF file.', 'error');
+                }
+            }
+        }
+        
+        async function uploadDocument() {
+            if (!selectedFile) return;
+            
+            const uploadBtn = document.getElementById('uploadBtn');
+            const originalText = uploadBtn.textContent;
+            
+            uploadBtn.disabled = true;
+            uploadBtn.innerHTML = '<span class="spinner"></span> Uploading...';
+            
+            try {
+                const formData = new FormData();
+                formData.append('file', selectedFile);
+                
+                const endpoint = selectedCollection === 'hierarchical' ? '/ingest_hierarchical' : '/ingest';
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    let message = `✅ Successfully uploaded ${result.document_name} (${result.chunks_processed} chunks)`;
+                    if (result.chunk_types) {
+                        message += `\nChunk types: ${Object.entries(result.chunk_types).map(([type, count]) => `${type}: ${count}`).join(', ')}`;
+                    }
+                    if (result.section_categories) {
+                        message += `\nSections: ${Object.entries(result.section_categories).map(([cat, count]) => `${cat}: ${count}`).join(', ')}`;
+                    }
+                    showMessage(message, 'success');
+                    loadSystemStatus();
+                } else {
+                    showMessage(`❌ Upload failed: ${result.detail}`, 'error');
+                }
+            } catch (error) {
+                showMessage(`❌ Upload error: ${error.message}`, 'error');
+            } finally {
+                uploadBtn.disabled = false;
+                uploadBtn.textContent = originalText;
+            }
+        }
+        
+        async function queryAllMethods() {
+            const query = document.getElementById('queryInput').value.trim();
+            if (!query) {
+                showMessage('Please enter a query.', 'error');
+                return;
+            }
+            
+            const queryBtn = document.getElementById('queryBtn');
+            queryBtn.disabled = true;
+            queryBtn.innerHTML = '<span class="spinner"></span> Querying...';
+            
+            // Show results container
+            document.getElementById('resultsContainer').style.display = 'block';
+            
+            // Reset all answers to loading state
+            ['doclingAnswer', 'llmAnswer'].forEach(id => {
+                const element = document.getElementById(id);
+                element.className = 'method-answer expandable collapsed';
+                element.innerHTML = '<div class="loading"><span class="spinner"></span>Processing...</div>';
+            });
+            
+            // Clear sources
+            ['doclingSources', 'llmSources'].forEach(id => {
+                document.getElementById(id).innerHTML = '';
+            });
+            
+            try {
+                // Run both methods in parallel
+                const [doclingResult, llmResult] = await Promise.all([
+                    queryMethod('/query_hierarchical', { question: query, k: 10 }),
+                    queryMethod('/query_hierarchical_with_llm', { question: query, k: 10 })
+                ]);
+                
+                // Display results
+                displayResult('docling', doclingResult);
+                displayResult('llm', llmResult);
+                
+            } catch (error) {
+                showMessage(`❌ Query error: ${error.message}`, 'error');
+            } finally {
+                queryBtn.disabled = false;
+                queryBtn.textContent = '🚀 Query Both Methods';
+            }
+        }
+        
+        async function queryMethod(endpoint, payload) {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            
+            if (!response.ok) {
+                throw new Error(`${endpoint} failed: ${response.statusText}`);
+            }
+            
+            return response.json();
+        }
+        
+        function displayResult(method, result) {
+            // Update answer
+            const answerElement = document.getElementById(`${method}Answer`);
+            answerElement.textContent = result.answer;
+            if (result.answer.length > 500) {
+                answerElement.innerHTML += '<div class="expand-indicator">Click to expand</div>';
+            }
+            
+            // Update info
+            const infoElement = document.getElementById(`${method}Info`);
+            let infoText = `${result.total_results} results`;
+            if (result.approach_used) infoText += ` | ${result.approach_used}`;
+            if (result.synthesis_used) infoText += ` | LLM: ${result.model || 'Yes'}`;
+            infoElement.textContent = infoText;
+            
+            // Update sources
+            const sourcesElement = document.getElementById(`${method}Sources`);
+            if (result.sources && result.sources.length > 0) {
+                sourcesElement.innerHTML = result.sources.slice(0, 3).map(source => {
+                    const isHierarchical = source.chunk_type !== undefined;
+                    
+                    let sourceHtml = `
+                        <div class="source-item ${isHierarchical ? 'hierarchical-source' : ''}">
+                            <div class="source-header">
+                                <span class="source-document">${source.document}</span>
+                                <span class="source-confidence">${(source.confidence * 100).toFixed(1)}%</span>
+                            </div>
+                            <div class="source-excerpt">${source.text_excerpt}</div>
+                    `;
+                    
+                    if (isHierarchical) {
+                        sourceHtml += `
+                            <div class="source-meta">
+                                📊 ${source.chunk_type} | Level ${source.level} | 📂 ${source.section_category} | Page ${source.page}
+                                ${source.title ? `| "${source.title}"` : ''}
+                            </div>
+                        `;
+                    } else {
+                        sourceHtml += `
+                            <div class="source-meta">
+                                📄 Chunk ${source.chunk || 'N/A'} | Page ${source.page}
+                            </div>
+                        `;
+                    }
+                    
+                    sourceHtml += '</div>';
+                    return sourceHtml;
+                }).join('');
+            } else {
+                sourcesElement.innerHTML = '<p style="color: #6c757d; font-style: italic;">No sources found</p>';
+            }
+        }
+        
+        function showMessage(message, type) {
+            const uploadStatus = document.getElementById('uploadStatus');
+            uploadStatus.className = type;
+            uploadStatus.style.whiteSpace = 'pre-line';
+            uploadStatus.textContent = message;
+            
+            setTimeout(() => {
+                uploadStatus.textContent = '';
+                uploadStatus.className = '';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

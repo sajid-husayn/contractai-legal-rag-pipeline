@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ContractAI - Legal Document Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #fafbfc;
+            color: #2d3748;
+            min-height: 100vh;
+            line-height: 1.6;
+            font-size: 16px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            margin-bottom: 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1;
+        }
+
+        .header > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -0.05em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+            opacity: 0.95;
+        }
+
+        .powered-by {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+            margin-bottom: 0;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .upload-section-bottom {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .upload-action {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .upload-button-secondary {
+            background: #f7fafc;
+            color: #4a5568;
+            border: 2px dashed #cbd5e0;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-button-secondary:hover {
+            background: #edf2f7;
+            border-color: #a0aec0;
+            color: #2d3748;
+        }
+
+        .upload-hint {
+            font-size: 12px;
+            color: #718096;
+            font-weight: 500;
+        }
+
+        .upload-button {
+            background: #2d3748;
+            color: white;
+            border: 2px solid transparent;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(45, 55, 72, 0.15);
+        }
+
+        .upload-button:hover {
+            background: #1a202c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(45, 55, 72, 0.25);
+        }
+
+        .upload-button input {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .status-indicator {
+            color: #666;
+            font-size: 0.875rem;
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .status-tab {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 1px solid #dee2e6;
+            border-radius: 15px;
+            padding: 20px 25px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .status-content {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-label {
+            font-weight: 600;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .status-value {
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .status-value.healthy {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .status-value.error {
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        .upload-progress-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .upload-progress {
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            max-width: 200px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .progress-text {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.8rem;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        .main-container {
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .search-section {
+            padding: 0;
+            margin-bottom: 0;
+        }
+
+        .search-title {
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 24px;
+            text-align: center;
+            color: #64748b;
+            letter-spacing: -0.015em;
+            line-height: 1.3;
+        }
+
+        .sample-queries {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .suggestions-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+        }
+
+        .suggestion-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+        }
+
+        .suggestion-chip {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 20px;
+            padding: 0.625rem 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+            color: #333;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        .suggestion-chip:hover {
+            background: #e9ecef;
+            border-color: #adb5bd;
+            color: #212529;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-section {
+            position: relative;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 16px;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+        }
+
+        .input-container:focus-within {
+            border-color: #3182ce;
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+        }
+
+        .input-wrapper {
+            flex: 1;
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .input-actions {
+            display: flex;
+            align-items: center;
+            padding: 12px 0 12px 12px;
+        }
+
+        .attach-button {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.6;
+        }
+
+        .attach-button:hover {
+            background: #f1f5f9;
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .file-progress-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .file-icon {
+            font-size: 20px;
+            opacity: 0.7;
+        }
+
+        .file-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .file-name {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .file-status {
+            font-size: 12px;
+            color: #4a5568;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #fbbf24;
+            animation: pulse 1.5s infinite;
+        }
+
+        .status-indicator.completed {
+            background: #10b981;
+            animation: none;
+        }
+
+        .status-indicator.error {
+            background: #ef4444;
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .search-progress {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            padding: 8px 12px;
+            background: #f8fafc;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #4a5568;
+        }
+
+        .search-progress .status-indicator {
+            margin: 0;
+        }
+
+        .query-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 16px 8px;
+            color: #2d3748;
+            font-size: 1rem;
+            resize: none;
+            min-height: 3.5rem;
+            max-height: 8rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .query-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.95);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
+        }
+
+        .query-input::placeholder {
+            color: rgba(29, 29, 31, 0.6);
+        }
+
+        .search-button {
+            background: #6b7280;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-width: 100px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-button:hover:not(:disabled) {
+            background: #4b5563;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .search-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading-section {
+            margin-top: 2rem;
+        }
+
+        .loading-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .loading-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .loading-text {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 600;
+        }
+
+        .loading-subtext {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .results-section {
+            display: none;
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        .result-card {
+            background: white;
+            border: 1px solid #e1e8ed;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e1e8ed;
+        }
+
+        .result-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .result-info {
+            color: #666;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .result-content {
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .result-content h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .result-content p {
+            margin-bottom: 1rem;
+        }
+
+        .result-content strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .result-content table,
+        .formatted-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .result-content th,
+        .result-content td,
+        .formatted-table th,
+        .formatted-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
+        }
+
+        .result-content th,
+        .formatted-table th {
+            background: #f8fafc;
+            color: #2d3748;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #cbd5e0;
+        }
+
+        .result-content td,
+        .formatted-table td {
+            color: #4a5568;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .formatted-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .formatted-table tr:hover {
+            background: #f7fafc;
+        }
+
+        .sources-card, .analysis-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .sources-header, .analysis-header {
+            padding: 12px 16px 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .sources-title, .analysis-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 2px;
+        }
+
+        .sources-subtitle, .analysis-subtitle {
+            font-size: 12px;
+            color: #718096;
+            font-weight: 500;
+        }
+
+        #sourcesList {
+            padding: 12px 16px;
+        }
+
+        #analysisContent {
+            padding: 20px 24px;
+        }
+
+        .sources-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .source-item {
+            background: #f8f9fa;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .source-item:hover {
+            border-color: #adb5bd;
+            background: #e9ecef;
+        }
+
+        .source-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .source-document {
+            font-weight: 700;
+            color: #1a202c;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .source-document::before {
+            content: "📄";
+            font-size: 14px;
+        }
+
+        .source-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .source-confidence {
+            background: #28a745;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .expand-icon {
+            color: #666;
+            font-size: 0.8rem;
+            transition: transform 0.2s ease;
+            user-select: none;
+        }
+
+        .source-item:hover .expand-icon {
+            color: #333;
+        }
+
+        .source-meta {
+            color: #718096;
+            font-size: 11px;
+            margin-bottom: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .meta-item {
+            background: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+            font-size: 10px;
+        }
+
+        .source-excerpt {
+            color: #2d3748;
+            line-height: 1.4;
+            background: #f7fafc;
+            padding: 10px 12px;
+            border-radius: 6px;
+            margin-top: 8px;
+            border-left: 2px solid #e2e8f0;
+            font-size: 12px;
+        }
+
+        .loading {
+            display: flex;
+            gap: 0.25rem;
+            align-items: center;
+            color: #666;
+        }
+
+        .loading-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00d4ff;
+            animation: loading 1.5s infinite ease-in-out;
+        }
+
+        .loading-dot:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes loading {
+            0%, 80%, 100% { opacity: 0.3; }
+            40% { opacity: 1; }
+        }
+
+        .status-message {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .status-message.success {
+            border-color: #00ff88;
+            background: rgba(0, 255, 136, 0.1);
+            color: #00ff88;
+        }
+
+        .status-message.error {
+            border-color: #ff4444;
+            background: rgba(255, 68, 68, 0.1);
+            color: #ff4444;
+        }
+
+        .new-search {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .new-search-button {
+            background: #333;
+            color: #e5e5e5;
+            border: 1px solid #555;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .new-search-button:hover {
+            background: #444;
+            border-color: #00d4ff;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .status-content {
+                gap: 1rem;
+            }
+            
+            .status-item {
+                font-size: 0.8rem;
+            }
+            
+            .search-section {
+                padding: 1.5rem;
+            }
+            
+            .sample-queries {
+                grid-template-columns: 1fr;
+            }
+            
+            .input-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .search-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="search-section" id="searchSection">
+            <h2 class="search-title">What would you like to know about your contracts?</h2>
+            
+            <div class="input-section">
+                <div id="statusArea"></div>
+                <div class="input-container">
+                    <div class="input-wrapper">
+                        <div class="input-actions">
+                            <label class="attach-button" title="Upload documents">
+                                📎
+                                <input type="file" id="fileInput" accept=".pdf" multiple style="display: none;" />
+                            </label>
+                        </div>
+                        <textarea 
+                            id="queryInput" 
+                            class="query-input" 
+                            placeholder="Ask any question about your contracts or upload new documents..."
+                            rows="1"
+                        ></textarea>
+                    </div>
+                    <button id="searchButton" class="search-button">
+                        <span class="search-icon">🔍</span>
+                        <span>Search</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="sample-queries" id="sampleQueries">
+                <div class="suggestions-label">Try asking:</div>
+                <div class="suggestion-chips">
+                    <span class="suggestion-chip" data-query="What are the payment terms and billing arrangements?">💰 Payment terms</span>
+                    <span class="suggestion-chip" data-query="What termination clauses and notice requirements exist?">📋 Termination clauses</span>
+                    <span class="suggestion-chip" data-query="What are the liability and indemnification terms?">⚖️ Liability & risk</span>
+                    <span class="suggestion-chip" data-query="What intellectual property provisions are included?">🧠 IP rights</span>
+                </div>
+            </div>
+            
+            <!-- Loading Section -->
+            <div class="loading-section" id="loadingSection" style="display: none;">
+                <div class="loading-card">
+                    <div class="loading-content">
+                        <div class="loading">
+                            <div class="loading-dot"></div>
+                            <div class="loading-dot"></div>
+                            <div class="loading-dot"></div>
+                        </div>
+                        <div class="loading-text">Searching your documents...</div>
+                        <div class="loading-subtext">This may take a few seconds</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upload Progress Area - Inline with search -->
+            <div id="uploadProgressArea" style="display: none; margin-top: 16px;">
+                <div id="uploadProgressList"></div>
+            </div>
+        </div>
+        
+        <div class="results-section" id="resultsSection">
+            <div class="result-card">
+                <div class="result-header">
+                    <div class="result-title">📊 Search Results</div>
+                    <div class="result-info" id="resultInfo"></div>
+                </div>
+                <div class="result-content" id="resultContent"></div>
+            </div>
+            
+            <!-- Sources Section - Now First -->
+            <div class="sources-card" id="sourcesSection" style="display: none;">
+                <div class="sources-header">
+                    <div class="sources-title">
+                        📋 <span id="sourcesTitle">Document Sources</span>
+                    </div>
+                    <div class="sources-subtitle">Click any source to expand full text</div>
+                </div>
+                <div id="sourcesList"></div>
+            </div>
+            
+            <!-- AI Analysis Section - Now Second -->
+            <div class="analysis-card" id="analysisSection" style="display: none;">
+                <div class="analysis-header">
+                    <div class="analysis-title">🤖 AI Analysis</div>
+                    <div class="analysis-subtitle">Synthesized insights from your documents</div>
+                </div>
+                <div id="analysisContent"></div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        let selectedFile = null;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            autoResizeTextarea();
+            loadSystemStatus();
+        });
+        
+        function setupEventListeners() {
+            document.getElementById('fileInput').addEventListener('change', handleFileSelection);
+            document.getElementById('searchButton').addEventListener('click', performSearch);
+            
+            const queryInput = document.getElementById('queryInput');
+            queryInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    performSearch();
+                }
+            });
+            
+            queryInput.addEventListener('input', function() {
+                autoResizeTextarea();
+                // Hide suggestions when user starts typing
+                if (this.value.trim().length > 0) {
+                    document.getElementById('sampleQueries').style.display = 'none';
+                }
+            });
+            
+            document.querySelectorAll('.suggestion-chip').forEach(chip => {
+                chip.addEventListener('click', function() {
+                    document.getElementById('queryInput').value = this.dataset.query;
+                    autoResizeTextarea();
+                    // Hide suggestions after first use
+                    document.getElementById('sampleQueries').style.display = 'none';
+                });
+            });
+        }
+        
+        function autoResizeTextarea() {
+            const textarea = document.getElementById('queryInput');
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 128) + 'px';
+        }
+        
+        function handleFileSelection(event) {
+            const files = event.target.files;
+            if (files.length > 0) {
+                uploadDocuments(files);
+            }
+        }
+        
+        async function uploadDocuments(files) {
+            const uploadProgressArea = document.getElementById('uploadProgressArea');
+            const uploadProgressList = document.getElementById('uploadProgressList');
+            
+            // Show upload area and clear previous uploads
+            uploadProgressArea.style.display = 'block';
+            uploadProgressList.innerHTML = '';
+            
+            // Create progress cards for each file
+            const fileCards = [];
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const cardId = `file-${i}-${Date.now()}`;
+                
+                const cardHtml = `
+                    <div class="file-progress-card" id="${cardId}">
+                        <div class="file-icon">📄</div>
+                        <div class="file-details">
+                            <div class="file-name">${file.name}</div>
+                            <div class="file-status" id="${cardId}-status">
+                                <div class="status-indicator"></div>
+                                <span>Preparing upload...</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                uploadProgressList.insertAdjacentHTML('beforeend', cardHtml);
+                fileCards.push(cardId);
+            }
+            
+            // Upload files sequentially with detailed progress
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const cardId = fileCards[i];
+                
+                try {
+                    await uploadSingleFileWithProgress(file, cardId);
+                    updateFileStatus(cardId, 'completed', '✅ Upload complete');
+                } catch (error) {
+                    updateFileStatus(cardId, 'error', `❌ Failed: ${error.message}`);
+                }
+            }
+            
+            // Reset the file input
+            document.getElementById('fileInput').value = '';
+            
+            // Auto-hide progress after 3 seconds if all successful
+            setTimeout(() => {
+                const hasErrors = uploadProgressList.querySelector('.status-indicator.error');
+                if (!hasErrors) {
+                    uploadProgressArea.style.display = 'none';
+                }
+            }, 3000);
+            
+            // Reload system status to show updated document count
+            loadSystemStatus();
+        }
+        
+        function updateFileStatus(cardId, statusType, message) {
+            const statusElement = document.getElementById(`${cardId}-status`);
+            const indicator = statusElement.querySelector('.status-indicator');
+            const text = statusElement.querySelector('span');
+            
+            indicator.className = `status-indicator ${statusType}`;
+            text.textContent = message;
+        }
+        
+        async function uploadSingleFileWithProgress(file, cardId) {
+            const steps = [
+                { message: 'Reading document...', delay: 500 },
+                { message: 'Parsing content with Docling...', delay: 1000 },
+                { message: 'Extracting hierarchical structure...', delay: 800 },
+                { message: 'Creating vector embeddings...', delay: 1200 },
+                { message: 'Storing in database...', delay: 600 }
+            ];
+            
+            // Show processing steps
+            for (const step of steps) {
+                updateFileStatus(cardId, 'processing', step.message);
+                await new Promise(resolve => setTimeout(resolve, step.delay));
+            }
+            
+            // Actual upload
+            updateFileStatus(cardId, 'processing', 'Uploading to server...');
+            return uploadSingleFile(file);
+        }
+        
+        function uploadSingleFile(file) {
+            return new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                const formData = new FormData();
+                formData.append('file', file);
+                
+                
+                xhr.addEventListener('load', () => {
+                    if (xhr.status === 200) {
+                        try {
+                            const result = JSON.parse(xhr.responseText);
+                            resolve(result);
+                        } catch (e) {
+                            reject(new Error('Invalid response'));
+                        }
+                    } else {
+                        try {
+                            const error = JSON.parse(xhr.responseText);
+                            reject(new Error(error.detail || 'Upload failed'));
+                        } catch (e) {
+                            reject(new Error(`HTTP ${xhr.status}`));
+                        }
+                    }
+                });
+                
+                xhr.addEventListener('error', () => {
+                    reject(new Error('Network error'));
+                });
+                
+                xhr.open('POST', '/ingest_hierarchical');
+                xhr.send(formData);
+            });
+        }
+        
+        async function performSearch() {
+            const query = document.getElementById('queryInput').value.trim();
+            if (!query) return;
+            
+            const searchButton = document.getElementById('searchButton');
+            const uploadProgressArea = document.getElementById('uploadProgressArea');
+            const uploadProgressList = document.getElementById('uploadProgressList');
+            
+            // Disable button and show search progress
+            searchButton.disabled = true;
+            const searchButtonText = searchButton.querySelector('span');
+            searchButtonText.textContent = 'Searching...';
+            
+            // Show search progress
+            uploadProgressArea.style.display = 'block';
+            uploadProgressList.innerHTML = `
+                <div class="search-progress" id="searchProgress">
+                    <div class="status-indicator"></div>
+                    <span>Preparing search...</span>
+                </div>
+            `;
+            
+            document.getElementById('resultsSection').classList.remove('show');
+            
+            try {
+                // Show search steps
+                await updateSearchStatus('🔍 Processing your question...');
+                await new Promise(resolve => setTimeout(resolve, 400));
+                
+                await updateSearchStatus('📊 Searching document database...');
+                await new Promise(resolve => setTimeout(resolve, 300));
+                
+                await updateSearchStatus('🤖 Analyzing with AI...');
+                
+                const response = await fetch('/query_hierarchical', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        question: query,
+                        k: 10
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    await updateSearchStatus('✅ Search complete!');
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    
+                    // Hide search progress and show results
+                    uploadProgressArea.style.display = 'none';
+                    document.getElementById('resultsSection').classList.add('show');
+                    displayResults(result, query);
+                } else {
+                    await updateSearchStatus('❌ Search failed');
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    uploadProgressArea.style.display = 'none';
+                    showError(`Error: ${result.detail}`);
+                }
+            } catch (error) {
+                await updateSearchStatus('❌ Search failed');
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                uploadProgressArea.style.display = 'none';
+                document.getElementById('resultsSection').classList.add('show');
+                showError(`Error: ${error.message}`);
+            } finally {
+                searchButton.disabled = false;
+                const searchButtonText = searchButton.querySelector('span');
+                searchButtonText.textContent = 'Search';
+            }
+        }
+        
+        function updateSearchStatus(message) {
+            const searchProgress = document.getElementById('searchProgress');
+            if (searchProgress) {
+                const span = searchProgress.querySelector('span');
+                if (span) {
+                    span.textContent = message;
+                }
+            }
+        }
+        
+        function displayResults(result, query) {
+            // Update query info
+            document.getElementById('resultInfo').textContent = 
+                `${result.total_results} results • ${result.approach_used}`;
+            
+            let content = '';
+            
+            // Add user question
+            content += `<div style="background: #f8f9fa; padding: 1rem; border-radius: 12px; margin-bottom: 2rem; border-left: 4px solid #3182ce;">`;
+            content += `<strong style="color: #3182ce;">Question:</strong> <span style="color: #2d3748;">${escapeHtml(query)}</span>`;
+            content += `</div>`;
+            
+            document.getElementById('resultContent').innerHTML = content;
+            
+            // Display sources first
+            if (result.sources && result.sources.length > 0) {
+                document.getElementById('sourcesSection').style.display = 'block';
+                document.getElementById('sourcesTitle').textContent = 
+                    `Document Sources (${result.sources.length} of ${result.total_results} results)`;
+                
+                let sourcesHtml = '';
+                result.sources.forEach((source, index) => {
+                    const truncatedExcerpt = source.text_excerpt.length > 200 
+                        ? source.text_excerpt.substring(0, 200) + '...' 
+                        : source.text_excerpt;
+                    
+                    sourcesHtml += `
+                        <div class="source-item" onclick="toggleSource(${index})">
+                            <div class="source-header">
+                                <span class="source-document">${source.document}</span>
+                                <div class="source-controls">
+                                    <span class="source-confidence">${(source.confidence * 100).toFixed(1)}% match</span>
+                                    <span class="expand-icon" id="expand-${index}">▼</span>
+                                </div>
+                            </div>
+                            <div class="source-meta">
+                                <span class="meta-item">📄 ${source.chunk_type}</span>
+                                <span class="meta-item">📊 Level ${source.level}</span>
+                                <span class="meta-item">📋 ${source.section_category}</span>
+                                <span class="meta-item">📄 Page ${source.page}</span>
+                            </div>
+                            <div class="source-excerpt" id="excerpt-${index}">
+                                <div class="excerpt-preview">${truncatedExcerpt}</div>
+                                <div class="excerpt-full" style="display: none;">${source.text_excerpt}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                document.getElementById('sourcesList').innerHTML = sourcesHtml;
+            }
+
+            // Display AI analysis second
+            if (result.answer || (result.llm_answer && !result.llm_answer.includes('Error') && !result.llm_answer.includes('unavailable'))) {
+                document.getElementById('analysisSection').style.display = 'block';
+                
+                let analysisHtml = '';
+                
+                // Add LLM synthesis first (if available and clean)
+                if (result.llm_answer && !result.llm_answer.includes('Error') && !result.llm_answer.includes('unavailable')) {
+                    analysisHtml += `<h4 style="color: #1a202c; margin-bottom: 1rem; font-size: 16px; font-weight: 700;">🤖 AI Legal Analysis</h4>`;
+                    analysisHtml += `<div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 2rem; line-height: 1.6;">`;
+                    analysisHtml += formatAnswer(result.llm_answer);
+                    analysisHtml += `</div>`;
+                }
+                
+                // Add RAG results last - always visible
+                if (result.answer) {
+                    analysisHtml += `<h4 style="color: #1a202c; margin: 2rem 0 1rem 0; font-size: 16px; font-weight: 700;">📋 RAG Results</h4>`;
+                    analysisHtml += `<div style="background: #f9f9f9; padding: 20px; border-radius: 8px; border-left: 3px solid #cbd5e0; font-size: 14px; line-height: 1.6;">`;
+                    analysisHtml += formatAnswer(result.answer);
+                    analysisHtml += `</div>`;
+                }
+                
+                document.getElementById('analysisContent').innerHTML = analysisHtml;
+            }
+        }
+        
+        function toggleSource(index) {
+            const preview = document.querySelector(`#excerpt-${index} .excerpt-preview`);
+            const full = document.querySelector(`#excerpt-${index} .excerpt-full`);
+            const icon = document.getElementById(`expand-${index}`);
+            
+            if (full.style.display === 'none') {
+                preview.style.display = 'none';
+                full.style.display = 'block';
+                icon.textContent = '▲';
+            } else {
+                preview.style.display = 'block';
+                full.style.display = 'none';
+                icon.textContent = '▼';
+            }
+        }
+        
+        function formatAnswer(text) {
+            // Enhanced formatting for legal documents with proper table support
+            
+            // First, handle markdown tables
+            const tableRegex = /(\|.*\|[\s\S]*?\n(?:\|.*\|.*\n)*)/g;
+            text = text.replace(tableRegex, function(match) {
+                const lines = match.trim().split('\n');
+                if (lines.length < 2) return match;
+                
+                let tableHtml = '<table class="formatted-table">';
+                
+                // Process each line
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (!line.startsWith('|') || !line.endsWith('|')) continue;
+                    
+                    // Skip separator lines (like |---|---|)
+                    if (line.match(/^\|[\s\-\|:]+\|$/)) continue;
+                    
+                    const cells = line.split('|').slice(1, -1); // Remove empty first/last elements
+                    const isHeader = i === 0;
+                    
+                    tableHtml += '<tr>';
+                    cells.forEach(cell => {
+                        const cleanCell = cell.trim();
+                        if (isHeader) {
+                            tableHtml += `<th>${cleanCell}</th>`;
+                        } else {
+                            tableHtml += `<td>${cleanCell}</td>`;
+                        }
+                    });
+                    tableHtml += '</tr>';
+                }
+                
+                tableHtml += '</table>';
+                return tableHtml;
+            });
+            
+            // Then handle other markdown formatting
+            return text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/`(.*?)`/g, '<code style="background: #f1f5f9; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em;">$1</code>')
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n/g, '<br>')
+                .replace(/^/, '<p>')
+                .replace(/$/, '</p>')
+                .replace(/<p><\/p>/g, '');
+        }
+        
+        function showStatus(message, type) {
+            const statusArea = document.getElementById('statusArea');
+            statusArea.innerHTML = `<div class="status-message ${type}">${message}</div>`;
+            setTimeout(() => {
+                statusArea.innerHTML = '';
+            }, 5000);
+        }
+        
+        function showError(message) {
+            document.getElementById('resultContent').innerHTML = 
+                `<div style="color: #ff4444; text-align: center; padding: 2rem;">${message}</div>`;
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        async function loadSystemStatus() {
+            try {
+                const response = await fetch('/health');
+                const status = await response.json();
+                
+                // Update status tab with health data
+                document.getElementById('systemStatus').textContent = status.status === 'healthy' ? 'Healthy' : 'Error';
+                document.getElementById('systemStatus').className = `status-value ${status.status === 'healthy' ? 'healthy' : 'error'}`;
+                
+                if (status.collection) {
+                    document.getElementById('documentCount').textContent = status.collection.documents_count || 0;
+                    document.getElementById('chunkCount').textContent = status.collection.total_chunks || 0;
+                }
+                
+            } catch (error) {
+                console.error('Failed to load system status:', error);
+                document.getElementById('systemStatus').textContent = 'Error';
+                document.getElementById('systemStatus').className = 'status-value error';
+            }
+        }
+        
+    </script>
+</body>
+</html>
