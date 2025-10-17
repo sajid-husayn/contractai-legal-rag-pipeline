@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Test</title>
+</head>
+<body>
+    <h1>Debug Test</h1>
+    <select id="collectionFilter">
+        <option value="">All Collections</option>
+    </select>
+    <button onclick="testLoad()">Load Collections</button>
+    <div id="output"></div>
+
+    <script>
+        let availableCollections = [];
+
+        async function testLoad() {
+            console.log('Starting test load...');
+            try {
+                const response = await fetch('/projects');
+                const data = await response.json();
+                console.log('API Response:', data);
+                
+                if (response.ok && data.projects) {
+                    availableCollections = data.projects;
+                    console.log('Available collections:', availableCollections);
+                    updateDropdown();
+                    document.getElementById('output').innerHTML = `<p>Loaded ${availableCollections.length} collections</p>`;
+                } else {
+                    document.getElementById('output').innerHTML = `<p>API Error: ${JSON.stringify(data)}</p>`;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('output').innerHTML = `<p>Fetch Error: ${error.message}</p>`;
+            }
+        }
+
+        function updateDropdown() {
+            const select = document.getElementById('collectionFilter');
+            console.log('Updating dropdown, collections:', availableCollections);
+            
+            select.innerHTML = '<option value="">All Collections</option>';
+            
+            availableCollections.forEach(collection => {
+                const option = document.createElement('option');
+                option.value = collection.project_name;
+                option.textContent = `${collection.project_name} (${collection.document_count} docs)`;
+                select.appendChild(option);
+                console.log('Added option:', option.textContent);
+            });
+        }
+
+        // Test on page load
+        document.addEventListener('DOMContentLoaded', testLoad);
+    </script>
+</body>
+</html>

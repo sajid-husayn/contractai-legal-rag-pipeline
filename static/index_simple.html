@@ -11,10 +11,59 @@
             box-sizing: border-box;
         }
 
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200px 0;
+            }
+            100% {
+                background-position: calc(200px + 100%) 0;
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        .loading-shimmer {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200px 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #fafbfc;
-            color: #2d3748;
+            background: #f3f4f6;
+            color: #1e293b;
             height: 100vh;
             line-height: 1.6;
             font-size: 16px;
@@ -24,8 +73,8 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 40px 20px;
+            background: #f3f4f6;
+            padding: 32px 24px;
             margin-bottom: 0;
             text-align: center;
             position: relative;
@@ -57,28 +106,27 @@
         }
 
         .logo h1 {
-            font-size: 3rem;
-            font-weight: 800;
-            color: white;
-            letter-spacing: -0.05em;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+            font-family: 'Georgia', serif;
         }
 
         .subtitle {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1.25rem;
-            margin-bottom: 0.75rem;
-            font-weight: 500;
-            opacity: 0.95;
+            color: #4a5568;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+            letter-spacing: 0.025em;
         }
 
         .powered-by {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.95rem;
+            color: #6b7280;
+            font-size: 0.9rem;
             margin-bottom: 0;
             font-weight: 500;
-            opacity: 0.9;
         }
 
         .upload-section-bottom {
@@ -241,22 +289,67 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
+            background: #f3f4f6;
         }
 
         .messages-area {
             flex: 1;
             overflow-y: auto;
-            padding: 2rem 1rem;
-            padding-bottom: 1rem;
+            padding: 0;
+            background: #f3f4f6;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .messages-content {
+            flex: 1;
+            padding: 2.5rem 2rem 1.5rem;
+            overflow-y: auto;
+        }
+        
+        .welcome-input-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+            transition: all 0.4s ease;
+        }
+        
+        .welcome-input-container.centered {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .welcome-input-container.bottom-fixed {
+            justify-content: flex-end;
+            min-height: auto;
+        }
+        
+        .welcome-input-container.bottom-fixed .welcome-section {
+            display: none;
         }
 
-        /* Fixed input area at bottom */
+        /* Input area styling */
         .input-section {
             flex-shrink: 0;
-            background: #fafbfc;
-            padding: 16px 20px 20px;
+            background: #f3f4f6;
+            padding: 20px 24px 24px;
+            transition: all 0.4s ease;
+        }
+        
+        .welcome-input-container.centered .input-section {
+            background: transparent;
+            border: none;
+            padding: 2rem 0;
+        }
+        
+        .welcome-input-container.bottom-fixed .input-section {
+            border-top: 1px solid #e5e7eb;
+            position: sticky;
+            bottom: 0;
         }
 
         .input-container-wrapper {
@@ -271,16 +364,36 @@
         /* Welcome section styling */
         .welcome-section {
             text-align: center;
-            padding: 6vh 0 4vh;
-            max-width: 600px;
+            padding: 4rem 0 3rem;
+            max-width: 700px;
             margin: 0 auto;
         }
 
+        .welcome-title {
+            font-size: 2.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            font-family: 'Georgia', serif;
+            letter-spacing: -0.025em;
+        }
+
         .welcome-subtitle {
-            font-size: 1.1rem;
+            font-size: 1.25rem;
             color: #64748b;
             font-weight: 400;
             margin: 0;
+            line-height: 1.5;
+        }
+
+        .welcome-description {
+            font-size: 1rem;
+            color: #6b7280;
+            margin: 1.5rem 0 0;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
         }
 
         .search-title {
@@ -515,8 +628,14 @@
             box-shadow: 0 0 0 1px #2563eb, 0 4px 12px rgba(37, 99, 235, 0.15);
         }
 
-        /* Model selector (left side) */
-        .model-selector-inline {
+        /* Left side dropdowns container */
+        .left-dropdowns {
+            display: flex;
+            border-right: 1px solid #e5e7eb;
+        }
+
+        /* Unified dropdown styles */
+        .selector-inline {
             position: relative;
             display: flex;
             align-items: center;
@@ -525,7 +644,11 @@
             min-width: 140px;
         }
 
-        .model-dropdown-inline {
+        .selector-inline:last-child {
+            border-right: none;
+        }
+
+        .dropdown-inline {
             background: transparent;
             border: none;
             font-size: 14px;
@@ -538,13 +661,159 @@
             outline: none;
             padding-right: 20px;
             font-family: inherit;
+            max-width: 120px;
         }
 
-        .model-dropdown-icon {
+        .dropdown-icon {
             position: absolute;
             right: 16px;
             color: #9ca3af;
             pointer-events: none;
+        }
+
+        /* Collections section */
+        .collections-section {
+            background: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+            padding: 16px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .collections-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .collections-header h3 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .collections-toggle {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .collections-toggle:hover {
+            background: #4b5563;
+        }
+
+        .collections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px;
+        }
+
+        .collection-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 12px;
+            transition: border-color 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .collection-content {
+            flex: 1;
+        }
+        
+        .delete-collection-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            margin-left: 12px;
+        }
+        
+        .delete-collection-btn:hover {
+            background: #dc2626;
+            transform: scale(1.05);
+        }
+
+        .collection-card:hover {
+            border-color: #d1d5db;
+        }
+
+        .collection-name {
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .collection-meta {
+            font-size: 12px;
+            color: #6b7280;
+            display: flex;
+            gap: 12px;
+        }
+
+        .collection-type {
+            background: #eff6ff;
+            color: #1d4ed8;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: capitalize;
+        }
+
+        /* Loading spinner animation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Collection mode tabs */
+        .collection-mode-tabs {
+            display: flex;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .mode-tab {
+            flex: 1;
+            padding: 10px 16px;
+            background: #f9fafb;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+            transition: all 0.2s;
+        }
+
+        .mode-tab:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .mode-tab.active {
+            background: #374151;
+            color: white;
+        }
+
+        .mode-tab:first-child {
+            border-right: 1px solid #e5e7eb;
+        }
+
+        .mode-tab.active:first-child {
+            border-right: 1px solid #374151;
         }
 
         /* Main input wrapper */
@@ -703,33 +972,43 @@
         }
 
         .result-card {
-            background: white;
-            border: 1px solid #e1e8ed;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            transition: all 0.2s ease;
+        }
+
+        .result-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            border-color: #d1d5db;
         }
 
         .result-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e1e8ed;
+            margin-bottom: 18px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #f3f4f6;
         }
 
         .result-title {
             font-size: 1.25rem;
             font-weight: 600;
-            color: #2c3e50;
+            color: #1e293b;
+            letter-spacing: -0.025em;
         }
 
         .result-info {
-            color: #666;
+            color: #64748b;
             font-size: 0.875rem;
             font-weight: 500;
+            background: #f8fafc;
+            padding: 4px 12px;
+            border-radius: 6px;
         }
 
         .result-content {
@@ -854,12 +1133,14 @@
         .source-item {
             background: #f8f9fa;
             border: 1px solid #e2e8f0;
+            border-left: 4px solid #3182ce;
             border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
             font-size: 13px;
             cursor: pointer;
             transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .source-item:hover {
@@ -933,13 +1214,328 @@
 
         .source-excerpt {
             color: #2d3748;
-            line-height: 1.4;
+            line-height: 1.6;
             background: #f7fafc;
-            padding: 10px 12px;
+            padding: 15px 18px;
             border-radius: 6px;
             margin-top: 8px;
-            border-left: 2px solid #e2e8f0;
+            border-left: 3px solid #3182ce;
+            font-size: 13px;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            text-align: justify;
+        }
+
+        .source-excerpt .legal-term {
+            font-weight: 600;
+            color: #2c5aa0;
+            background: rgba(49, 130, 206, 0.1);
+            padding: 1px 3px;
+            border-radius: 2px;
+        }
+
+        .source-excerpt .section-number {
+            font-weight: 700;
+            color: #1a202c;
+            margin-right: 8px;
+        }
+
+        .source-excerpt .clause-text {
+            margin: 8px 0;
+            text-indent: 20px;
+        }
+
+        .excerpt-preview {
+            cursor: pointer;
+        }
+
+        .excerpt-full {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .citation-line {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            padding: 8px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            font-size: 11px;
+        }
+
+        .citation-text {
+            flex: 1;
+            font-family: 'Georgia', serif;
+            font-weight: 500;
+            color: #2c3e50;
+            cursor: pointer;
+        }
+
+        .citation-text:hover {
+            color: #3182ce;
+            text-decoration: underline;
+        }
+
+        .copy-citation-btn {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 3px;
+            padding: 4px 6px;
+            cursor: pointer;
+            font-size: 10px;
+            transition: all 0.2s ease;
+            color: #6c757d;
+        }
+
+        .copy-citation-btn:hover {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .meta-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .view-context-btn {
+            background: #3182ce;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 4px 8px;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-right: 8px;
+        }
+
+        .view-context-btn:hover {
+            background: #2c5aa0;
+        }
+
+        /* Modal styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            max-width: 80%;
+            max-height: 80%;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .context-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+            background: #f8f9fa;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .context-header h3 {
+            margin: 0;
+            color: #2d3748;
+        }
+
+        .close-modal-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6c757d;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-modal-btn:hover {
+            color: #dc3545;
+        }
+
+        .context-content {
+            padding: 20px;
+        }
+
+        .document-hierarchy {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #3182ce;
+        }
+
+        .document-hierarchy h4 {
+            margin: 0 0 10px 0;
+            color: #2d3748;
+        }
+
+        .hierarchy-level {
+            margin: 8px 0;
+            padding: 5px 0;
+            color: #4a5568;
+        }
+
+        .hierarchy-level.current {
+            font-weight: bold;
+            color: #3182ce;
+        }
+
+        .context-notice {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .context-notice ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .context-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .context-btn {
+            background: #374151;
+            border: 1px solid #374151;
+            border-radius: 4px;
+            padding: 8px 12px;
+            cursor: pointer;
             font-size: 12px;
+            color: white;
+            transition: all 0.2s ease;
+        }
+
+        .context-btn:hover {
+            background: #1f2937;
+            border-color: #1f2937;
+        }
+
+        /* Export Modal Styles */
+        .export-options h4 {
+            margin: 15px 0 10px 0;
+            color: #2d3748;
+        }
+
+        .format-options, .include-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .format-options label, .include-options label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 12px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            background: #f8f9fa;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 4px;
+        }
+
+        .format-options label:hover, .include-options label:hover {
+            background: #f1f5f9;
+            border-color: #d1d5db;
+        }
+
+        .format-options input[type="radio"], .include-options input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #374151;
+        }
+
+        .format-options input[type="radio"]:checked + span,
+        .include-options input[type="checkbox"]:checked + span {
+            font-weight: 500;
+            color: #1f2937;
+        }
+
+        .export-actions, .preview-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .export-btn {
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .export-btn.primary {
+            background: #374151;
+            color: white;
+        }
+
+        .export-btn.primary:hover {
+            background: #1f2937;
+        }
+
+        .export-btn.secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .export-btn.secondary:hover {
+            background: #4b5563;
+        }
+
+        .export-preview {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 15px;
+            background: #f8f9fa;
+            margin: 15px 0;
+        }
+
+        .export-preview pre {
+            margin: 0;
+            font-size: 11px;
+            line-height: 1.4;
+            font-family: 'Monaco', 'Menlo', monospace;
+            white-space: pre-wrap;
         }
 
         .loading {
@@ -1007,9 +1603,390 @@
             border-color: #00d4ff;
         }
 
+        /* Project Upload Styles */
+        .project-upload-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .project-upload-card {
+            background: white;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .upload-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .upload-header h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .close-upload-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+        }
+
+        .close-upload-btn:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .project-form {
+            padding: 24px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-input, .form-select {
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #ffffff;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #374151;
+            box-shadow: 0 0 0 3px rgba(55, 65, 81, 0.1);
+            background: #f9fafb;
+        }
+
+        .form-input:hover, .form-select:hover {
+            border-color: #9ca3af;
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 12px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+
+        .file-upload-area {
+            margin: 24px 0;
+        }
+
+        .file-upload-area label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .file-drop-zone {
+            border: 2px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 32px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .file-drop-zone:hover {
+            border-color: #2563eb;
+            background: #f8faff;
+        }
+
+        .file-drop-zone.dragover {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .drop-zone-content svg {
+            color: #9ca3af;
+            margin-bottom: 16px;
+        }
+
+        .drop-zone-content p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .browse-link {
+            color: #2563eb;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .file-hint {
+            font-size: 12px !important;
+            color: #9ca3af !important;
+            margin-top: 4px !important;
+        }
+
+        .file-list {
+            margin-top: 16px;
+        }
+
+        .file-item {
+            padding: 12px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .file-content {
+            width: 100%;
+        }
+        
+        .file-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .add-more-files button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        
+        .add-more-files svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .file-name {
+            font-weight: 500;
+        }
+        
+        .file-status {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: 8px;
+        }
+        
+        .file-status.ready {
+            background: #e5e7eb;
+            color: #6b7280;
+        }
+        
+        .file-status.uploading {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+        
+        .file-status.success {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        
+        .file-status.error {
+            background: #fecaca;
+            color: #dc2626;
+        }
+        
+        .file-progress {
+            margin-top: 8px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 4px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #2563eb;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            font-size: 12px;
+            color: #6b7280;
+            text-align: right;
+        }
+
+        .file-type-select {
+            padding: 4px 8px;
+            font-size: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .btn-secondary {
+            background: #f9fafb;
+            color: #374151;
+            border: 1px solid #d1d5db;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #f3f4f6;
+        }
+
+        .btn-primary {
+            background: #374151;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(55, 65, 81, 0.3);
+            letter-spacing: 0.025em;
+        }
+
+        .btn-primary:hover {
+            background: #1f2937;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(55, 65, 81, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(55, 65, 81, 0.3);
+        }
+
+        .btn-primary:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Search Filters */
+        .search-filters {
+            margin: 12px 0 16px;
+            padding: 0;
+        }
+
+        .filter-section {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-label {
+            font-size: 13px;
+            color: #6b7280;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .project-filter-select {
+            padding: 6px 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 13px;
+            background: white;
+            color: #374151;
+            min-width: 140px;
+        }
+
+        .project-filter-select:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 1px #2563eb;
+        }
+
         @media (max-width: 768px) {
             .main-container {
-                padding: 1rem;
+                padding: 0;
+                max-width: 100%;
+            }
+            
+            .messages-area {
+                padding: 1.5rem 1rem;
+            }
+            
+            .welcome-section {
+                padding: 2rem 0;
+            }
+            
+            .welcome-title {
+                font-size: 1.75rem;
+            }
+            
+            .welcome-subtitle {
+                font-size: 1.1rem;
             }
             
             .status-content {
@@ -1033,6 +2010,25 @@
                 gap: 1rem;
             }
             
+            .modern-input-container {
+                min-height: 48px;
+            }
+            
+            .result-card {
+                padding: 16px;
+                margin-bottom: 16px;
+            }
+            
+            .source-item {
+                padding: 12px;
+            }
+            
+            .modal-content {
+                max-width: 95%;
+                max-height: 90%;
+            }
+        }
+            
             .search-button {
                 width: 100%;
             }
@@ -1043,9 +2039,191 @@
     <!-- Main content area -->
     <div class="main-container">
         <div class="messages-area">
-            <!-- Welcome message -->
-            <div class="welcome-section">
-                <p class="welcome-subtitle">Ask anything about your legal documents</p>
+            <div class="welcome-input-container centered" id="welcomeInputContainer">
+                <!-- Welcome message -->
+                <div class="welcome-section">
+                    <h1 class="welcome-title">Legal Document Intelligence</h1>
+                    <p class="welcome-subtitle">Ask anything about your legal documents</p>
+                    <p class="welcome-description">Upload contracts, agreements, and legal documents to get instant answers, extract key clauses, and conduct comprehensive legal research.</p>
+                </div>
+            
+                <!-- Input section - moved inside welcome container -->
+                <div class="input-section">
+                    <div class="input-container-wrapper">
+                        <div id="statusArea"></div>
+                        
+                        <!-- Modern ChatGPT-style input with integrated controls -->
+                        <div class="modern-input-container">
+                            <!-- Left side dropdowns -->
+                            <div class="left-dropdowns">
+                                <!-- Model selector dropdown -->
+                                <div class="selector-inline">
+                                    <select id="modelSelect" class="dropdown-inline">
+                                        <option value="openai/gpt-oss-20b">GPT-OSS 20B</option>
+                                        <option value="openai/gpt-oss-120b">GPT-OSS 120B</option>
+                                        <option value="llama3-70b-8192">Llama 3 70B</option>
+                                        <option value="llama3-8b-8192">Llama 3 8B</option>
+                                        <option value="llama-3.1-8b-instant">Llama 3.1 8B Instant</option>
+                                        <option value="gemma2-9b-it">Gemma 2 9B</option>
+                                    </select>
+                                    <svg class="dropdown-icon" width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
+                                        <path d="M2 3l3 3 3-3H2z"/>
+                                    </svg>
+                                </div>
+                                
+                                <!-- Collection selector dropdown -->
+                                <div class="selector-inline">
+                                    <select id="collectionFilter" class="dropdown-inline">
+                                        <option value="">All Collections</option>
+                                    </select>
+                                    <svg class="dropdown-icon" width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
+                                        <path d="M2 3l3 3 3-3H2z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            
+                            <!-- Main input area -->
+                            <div class="input-wrapper-modern">
+                                <textarea id="queryInput" class="query-input-modern" placeholder="Ask about payment terms, clauses, obligations, or any legal question..." rows="1"></textarea>
+                                
+                                <!-- Right side controls -->
+                                <div class="input-controls">
+                                    <!-- Collections toggle button -->
+                                    <button class="upload-button-modern" title="View collections" onclick="toggleCollections()">
+                                        <!-- Heroicons: Collection icon -->
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                                        </svg>
+                                    </button>
+                                    
+                                    <!-- Upload button -->
+                                    <button class="upload-button-modern" title="Upload documents" onclick="showProjectUpload()">
+                                        <!-- Heroicons: Plus icon -->
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M12 5v14M5 12h14"/>
+                                        </svg>
+                                    </button>
+                                    
+                                    <!-- Send button -->
+                                    <button id="searchButton" class="send-button-modern">
+                                        <!-- Heroicons: Arrow up icon -->
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M12 19V5M5 12l7-7 7 7"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- End welcome-input-container -->
+            
+            <div class="messages-content" id="messagesContent" style="display: none;">
+            
+            <!-- Project Upload Section -->
+            <div class="project-upload-section" id="projectUploadSection" style="display: none;">
+                <div class="project-upload-card">
+                    <div class="upload-header">
+                        <h3>Create Collection & Upload Documents</h3>
+                        <button class="close-upload-btn" onclick="closeProjectUpload()">×</button>
+                    </div>
+                    
+                    <div class="project-form">
+                        <!-- Collection Selection Mode -->
+                        <div class="form-row">
+                            <div class="form-group" style="grid-column: 1 / -1;">
+                                <label>Action</label>
+                                <div class="collection-mode-tabs">
+                                    <button type="button" id="newCollectionBtn" class="mode-tab active" onclick="switchToNewCollection()">Create New Collection</button>
+                                    <button type="button" id="existingCollectionBtn" class="mode-tab" onclick="switchToExistingCollection()">Add to Existing Collection</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Existing Collection Selector (hidden by default) -->
+                        <div class="form-row" id="existingCollectionRow" style="display: none;">
+                            <div class="form-group" style="grid-column: 1 / -1;">
+                                <label>Select Existing Collection</label>
+                                <select id="existingCollectionSelect" class="form-select">
+                                    <option value="">Choose a collection...</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- New Collection Fields -->
+                        <div id="newCollectionFields">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Collection Type</label>
+                                <select id="projectType" class="form-select">
+                                    <option value="client_matter">Client Matter</option>
+                                    <option value="research">Research Collection</option>
+                                    <option value="templates">Practice Library</option>
+                                    <option value="knowledge">Knowledge Base</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Collection Name</label>
+                                <input type="text" id="projectName" class="form-input" placeholder="e.g., Microsoft M&A 2024">
+                            </div>
+                        </div>
+                        
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Practice Area</label>
+                                    <select id="practiceArea" class="form-select">
+                                        <option value="">Select practice area</option>
+                                        <option value="corporate">Corporate</option>
+                                        <option value="litigation">Litigation</option>
+                                        <option value="employment">Employment</option>
+                                        <option value="ip">Intellectual Property</option>
+                                        <option value="real_estate">Real Estate</option>
+                                        <option value="tax">Tax</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Legal Topics (comma-separated)</label>
+                                    <input type="text" id="legalTopics" class="form-input" placeholder="e.g., merger, due diligence, regulatory">
+                                </div>
+                            </div>
+                        </div> <!-- End newCollectionFields -->
+                        
+                        <div class="file-upload-area">
+                            <label>Upload Documents</label>
+                            <div class="file-drop-zone" id="fileDropZone">
+                                <div class="drop-zone-content">
+                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14,2 14,8 20,8"></polyline>
+                                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                                        <polyline points="10,9 9,9 8,9"></polyline>
+                                    </svg>
+                                    <p>Drop PDF files here or <span class="browse-link">browse</span></p>
+                                    <p class="file-hint">Multiple files supported</p>
+                                </div>
+                                <input type="file" id="projectFileInput" multiple accept=".pdf" style="display: none;">
+                            </div>
+                            
+                            <div class="file-list" id="fileList" style="display: none;"></div>
+                            
+                            <div class="add-more-files" id="addMoreFiles" style="display: none; margin-top: 15px;">
+                                <button type="button" class="btn-secondary" onclick="addMoreFiles()">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                    Add More Files
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button class="btn-secondary" onclick="closeProjectUpload()">Cancel</button>
+                            <button class="btn-primary" id="uploadProjectBtn" onclick="uploadProject()">Create Collection & Upload</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <!-- Loading Section -->
@@ -1072,7 +2250,7 @@
             <div class="results-section" id="resultsSection">
                 <div class="result-card">
                     <div class="result-header">
-                        <div class="result-title">📊 Search Results</div>
+                        <div class="result-title">Search Results</div>
                         <div class="result-info" id="resultInfo"></div>
                     </div>
                     <div class="result-content" id="resultContent"></div>
@@ -1107,72 +2285,22 @@
                     <div id="ragContent"></div>
                 </div>
             </div>
+            </div> <!-- End messages-content -->
 
         </div> <!-- End messages-area -->
         
-        <!-- Fixed input area at bottom (ChatGPT style) -->
-        <div class="input-section">
-            <div class="input-container-wrapper">
-                <div id="statusArea"></div>
-                
-                <!-- Modern ChatGPT-style input with integrated controls -->
-                <div class="modern-input-container">
-                    <!-- Model selector dropdown (left side) -->
-                    <div class="model-selector-inline">
-                        <select id="modelSelect" class="model-dropdown-inline">
-                            <option value="openai/gpt-oss-20b">GPT-OSS 20B</option>
-                            <option value="openai/gpt-oss-120b">GPT-OSS 120B</option>
-                            <option value="llama3-70b-8192">Llama 3 70B</option>
-                            <option value="llama3-8b-8192">Llama 3 8B</option>
-                            <option value="llama-3.1-8b-instant">Llama 3.1 8B Instant</option>
-                            <option value="gemma2-9b-it">Gemma 2 9B</option>
-                        </select>
-                        <svg class="model-dropdown-icon" width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
-                            <path d="M2 3l3 3 3-3H2z"/>
-                        </svg>
-                    </div>
-                    
-                    <!-- Main input area -->
-                    <div class="input-wrapper-modern">
-                        <textarea 
-                            id="queryInput" 
-                            class="query-input-modern" 
-                            placeholder="Ask anything about your contracts..."
-                            rows="1"
-                        ></textarea>
-                        
-                        <!-- Right side controls -->
-                        <div class="input-controls">
-                            <!-- Upload button -->
-                            <label class="upload-button-modern" title="Upload documents">
-                                <!-- Heroicons: Plus icon -->
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M12 5v14M5 12h14"/>
-                                </svg>
-                                <input type="file" id="fileInput" accept=".pdf" multiple style="display: none;" />
-                            </label>
-                            
-                            <!-- Send button -->
-                            <button id="searchButton" class="send-button-modern">
-                                <!-- Heroicons: Arrow up icon -->
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M12 19V5M5 12l7-7 7 7"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Suggestion chips below input -->
-                <div class="sample-queries" id="sampleQueries">
-                    <div class="suggestions-label">Try asking:</div>
-                    <div class="suggestion-chips">
-                        <span class="suggestion-chip" data-query="What are the payment terms and billing arrangements?">💰 Payment terms</span>
-                        <span class="suggestion-chip" data-query="What termination clauses and notice requirements exist?">📋 Termination clauses</span>
-                        <span class="suggestion-chip" data-query="What are the liability and indemnification terms?">⚖️ Liability & risk</span>
-                        <span class="suggestion-chip" data-query="What intellectual property provisions are included?">🧠 IP rights</span>
-                    </div>
-                </div>
+        <!-- Collections section -->
+        <div class="collections-section" id="collectionsSection" style="display: none;">
+            <div class="collections-header">
+                <h3>Available Collections</h3>
+                <button onclick="toggleCollections()" class="collections-toggle">Show</button>
+            </div>
+            <div class="collections-loading" id="collectionsLoading" style="display: block; padding: 20px; text-align: center; color: #6b7280;">
+                <div style="display: inline-block; width: 20px; height: 20px; border: 2px solid #e5e7eb; border-top: 2px solid #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 10px;"></div>
+                Loading collections...
+            </div>
+            <div class="collections-grid" id="collectionsGrid" style="display: none;">
+                <!-- Collections will be populated here -->
             </div>
         </div>
         
@@ -1180,47 +2308,182 @@
 
     <script>
         let selectedFile = null;
+        let currentQuery = '';
+        let allSearchResults = [];
+        let selectedCollectionFiles = [];
+        let availableCollections = [];
         
         document.addEventListener('DOMContentLoaded', function() {
-            setupEventListeners();
-            autoResizeTextarea();
-            loadSystemStatus();
+            try {
+                console.log('DOM loaded, starting initialization...');
+                setupEventListeners();
+                autoResizeTextarea();
+                loadSystemStatus();
+                
+                // Test if the collectionFilter element exists
+                const collectionFilter = document.getElementById('collectionFilter');
+                console.log('Collection filter element found:', !!collectionFilter);
+                
+                // Simple direct approach - test immediately
+                setTimeout(simpleLoadCollections, 500);
+                
+            } catch (error) {
+                console.error('Error in DOMContentLoaded:', error);
+            }
         });
         
+        // Simplified collection loading function
+        function simpleLoadCollections() {
+            console.log('simpleLoadCollections called');
+            fetch('/projects')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Simple load - API response:', data);
+                    if (data && data.projects) {
+                        // Update dropdown
+                        const select = document.getElementById('collectionFilter');
+                        if (select) {
+                            select.innerHTML = '<option value="">All Collections</option>';
+                            data.projects.forEach(proj => {
+                                const opt = document.createElement('option');
+                                opt.value = proj.project_name;
+                                opt.textContent = proj.project_name + ' (' + proj.document_count + ' docs)';
+                                select.appendChild(opt);
+                                console.log('Simple load - added to dropdown:', opt.textContent);
+                            });
+                        }
+                        
+                        // Update collections display
+                        simpleUpdateCollectionsDisplay(data.projects);
+                        
+                    } else {
+                        console.error('No projects in API response');
+                        hideLoader();
+                    }
+                })
+                .catch(err => {
+                    console.error('Simple load error:', err);
+                    hideLoader();
+                });
+        }
+        
+        function simpleUpdateCollectionsDisplay(collections) {
+            console.log('simpleUpdateCollectionsDisplay called with:', collections);
+            
+            const collectionsGrid = document.getElementById('collectionsGrid');
+            const collectionsLoading = document.getElementById('collectionsLoading');
+            
+            if (!collectionsGrid) {
+                console.error('collectionsGrid not found');
+                return;
+            }
+            
+            // Hide loading, show grid
+            if (collectionsLoading) collectionsLoading.style.display = 'none';
+            collectionsGrid.style.display = 'block';
+            
+            // Clear and populate
+            collectionsGrid.innerHTML = '';
+            
+            collections.forEach(collection => {
+                const card = document.createElement('div');
+                card.className = 'collection-card';
+                card.innerHTML = 
+                    '<div class="collection-content">' +
+                        '<div class="collection-name">' + collection.project_name + '</div>' +
+                        '<div class="collection-meta">' +
+                            '<span class="collection-type">' + formatCollectionType(collection.project_type) + '</span>' +
+                            '<span>' + collection.document_count + ' documents</span>' +
+                            '<span>' + collection.chunk_count + ' chunks</span>' +
+                            (collection.practice_area ? '<span>' + collection.practice_area + '</span>' : '') +
+                        '</div>' +
+                    '</div>' +
+                    '<button class="delete-collection-btn" onclick="deleteCollection(\'' + collection.project_name + '\')" title="Delete Collection">' +
+                        '🗑️' +
+                    '</button>';
+                collectionsGrid.appendChild(card);
+                console.log('Added collection card for:', collection.project_name);
+            });
+        }
+        
+        function hideLoader() {
+            const collectionsLoading = document.getElementById('collectionsLoading');
+            const collectionsGrid = document.getElementById('collectionsGrid');
+            if (collectionsLoading) collectionsLoading.style.display = 'none';
+            if (collectionsGrid) {
+                collectionsGrid.style.display = 'block';
+                collectionsGrid.innerHTML = '<div style="padding: 20px; text-align: center; color: #6b7280;">No collections available</div>';
+            }
+        }
+        
         function setupEventListeners() {
-            document.getElementById('fileInput').addEventListener('change', handleFileSelection);
-            document.getElementById('searchButton').addEventListener('click', performSearch);
+            // Only set up event listeners for elements that exist
+            const fileInput = document.getElementById('fileInput');
+            const searchButton = document.getElementById('searchButton');
+            
+            if (fileInput) {
+                fileInput.addEventListener('change', handleFileSelection);
+            } else {
+                console.log('fileInput element not found, skipping event listener');
+            }
+            
+            if (searchButton) {
+                searchButton.addEventListener('click', performSearch);
+            } else {
+                console.log('searchButton element not found, skipping event listener');
+            }
             
             const queryInput = document.getElementById('queryInput');
-            queryInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    performSearch();
-                }
-            });
-            
-            queryInput.addEventListener('input', function() {
-                autoResizeTextarea();
-                // Hide suggestions when user starts typing
-                if (this.value.trim().length > 0) {
-                    document.getElementById('sampleQueries').style.display = 'none';
-                }
-            });
-            
-            document.querySelectorAll('.suggestion-chip').forEach(chip => {
-                chip.addEventListener('click', function() {
-                    document.getElementById('queryInput').value = this.dataset.query;
-                    autoResizeTextarea();
-                    // Hide suggestions after first use
-                    document.getElementById('sampleQueries').style.display = 'none';
+            if (queryInput) {
+                queryInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        performSearch();
+                    }
                 });
-            });
+                
+                queryInput.addEventListener('input', function() {
+                    autoResizeTextarea();
+                    // Hide suggestions when user starts typing (if element exists)
+                    if (this.value.trim().length > 0) {
+                        const sampleQueries = document.getElementById('sampleQueries');
+                        if (sampleQueries) {
+                            sampleQueries.style.display = 'none';
+                        }
+                    }
+                });
+            } else {
+                console.log('queryInput element not found, skipping event listeners');
+            }
+            
+            // Set up suggestion chip handlers (if they exist)
+            const suggestionChips = document.querySelectorAll('.suggestion-chip');
+            if (suggestionChips.length > 0) {
+                suggestionChips.forEach(chip => {
+                    chip.addEventListener('click', function() {
+                        const queryInput = document.getElementById('queryInput');
+                        if (queryInput) {
+                            queryInput.value = this.dataset.query;
+                            autoResizeTextarea();
+                            // Hide suggestions after first use
+                            const sampleQueries = document.getElementById('sampleQueries');
+                            if (sampleQueries) {
+                                sampleQueries.style.display = 'none';
+                            }
+                        }
+                    });
+                });
+            } else {
+                console.log('No suggestion chips found, skipping handlers');
+            }
         }
         
         function autoResizeTextarea() {
             const textarea = document.getElementById('queryInput');
-            textarea.style.height = 'auto';
-            textarea.style.height = Math.min(textarea.scrollHeight, 128) + 'px';
+            if (textarea) {
+                textarea.style.height = 'auto';
+                textarea.style.height = Math.min(textarea.scrollHeight, 128) + 'px';
+            }
         }
         
         function handleFileSelection(event) {
@@ -1355,6 +2618,7 @@
         async function performSearch() {
             const query = document.getElementById('queryInput').value.trim();
             const selectedModel = document.getElementById('modelSelect').value;
+            const selectedCollection = document.getElementById('collectionFilter').value;
             
             if (!query) {
                 // Add subtle shake animation to indicate input needed
@@ -1364,6 +2628,21 @@
                     inputContainer.style.animation = '';
                 }, 300);
                 return;
+            }
+            
+            // Transform layout after first query
+            const welcomeInputContainer = document.getElementById('welcomeInputContainer');
+            const messagesContent = document.getElementById('messagesContent');
+            
+            if (welcomeInputContainer && welcomeInputContainer.classList.contains('centered')) {
+                // Switch from centered welcome mode to bottom-fixed results mode
+                welcomeInputContainer.classList.remove('centered');
+                welcomeInputContainer.classList.add('bottom-fixed');
+                
+                // Show the messages content area for results
+                if (messagesContent) {
+                    messagesContent.style.display = 'block';
+                }
             }
             
             const searchButton = document.getElementById('searchButton');
@@ -1395,16 +2674,23 @@
                 
                 await updateSearchStatus('🤖 Analyzing with AI...');
                 
+                const requestBody = {
+                    question: query,
+                    k: 10,
+                    model: selectedModel
+                };
+                
+                // Add project filter if selected
+                if (selectedCollection) {
+                    requestBody.project_filter = [selectedCollection];
+                }
+                
                 const response = await fetch('/query_hierarchical', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({
-                        question: query,
-                        k: 10,
-                        model: selectedModel
-                    })
+                    body: JSON.stringify(requestBody)
                 });
                 
                 const result = await response.json();
@@ -1446,15 +2732,22 @@
         }
         
         function displayResults(result, query) {
-            // Update query info
+            // Store current query and results for potential "show all" functionality
+            currentQuery = query;
+            allSearchResults = result;
+            
+            // Update query info with user-friendly approach name
+            const approachDisplay = result.approach_used === 'hierarchical_docling' 
+                ? 'rag' 
+                : result.approach_used;
             document.getElementById('resultInfo').textContent = 
-                `${result.total_results} results • ${result.approach_used}`;
+                `${result.total_results} results • ${approachDisplay}`;
             
             let content = '';
             
             // Add user question
             content += `<div style="background: #f8f9fa; padding: 1rem; border-radius: 12px; margin-bottom: 2rem; border-left: 4px solid #3182ce;">`;
-            content += `<strong style="color: #3182ce;">Question:</strong> <span style="color: #2d3748;">${escapeHtml(query)}</span>`;
+            content += `<strong style="color: #3182ce;">Query:</strong> <span style="color: #2d3748;">${escapeHtml(query)}</span>`;
             content += `</div>`;
             
             document.getElementById('resultContent').innerHTML = content;
@@ -1462,14 +2755,30 @@
             // Display sources first
             if (result.sources && result.sources.length > 0) {
                 document.getElementById('sourcesSection').style.display = 'block';
-                document.getElementById('sourcesTitle').textContent = 
-                    `Document Sources (${result.sources.length} of ${result.total_results} results)`;
+                
+                // Update sources title with show all option and export button
+                const sourcesTitle = `Document Sources (${result.sources.length} of ${result.total_results} results)`;
+                const showAllButton = result.total_results > result.sources.length 
+                    ? ` <button onclick="fetchAllSources()" style="background: #3182ce; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; margin-left: 8px; cursor: pointer;">Show all ${result.total_results}</button>`
+                    : '';
+                const exportButton = result.sources.length > 0 
+                    ? ` <button onclick="exportResults()" style="background: #28a745; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; margin-left: 8px; cursor: pointer;">📄 Export</button>`
+                    : '';
+                
+                document.getElementById('sourcesTitle').innerHTML = sourcesTitle + showAllButton + exportButton;
                 
                 let sourcesHtml = '';
                 result.sources.forEach((source, index) => {
-                    const truncatedExcerpt = source.text_excerpt.length > 200 
-                        ? source.text_excerpt.substring(0, 200) + '...' 
-                        : source.text_excerpt;
+                    // For legal documents, show more context - try to cut at sentence boundary
+                    let truncatedExcerpt = source.text_excerpt;
+                    if (source.text_excerpt.length > 500) {
+                        const cutPoint = source.text_excerpt.substring(0, 500).lastIndexOf('. ');
+                        if (cutPoint > 300) {
+                            truncatedExcerpt = source.text_excerpt.substring(0, cutPoint + 1) + ' [...]';
+                        } else {
+                            truncatedExcerpt = source.text_excerpt.substring(0, 500) + '...';
+                        }
+                    }
                     
                     sourcesHtml += `
                         <div class="source-item" onclick="toggleSource(${index})">
@@ -1477,18 +2786,25 @@
                                 <span class="source-document">${source.document}</span>
                                 <div class="source-controls">
                                     <span class="source-confidence">${(source.confidence * 100).toFixed(1)}% match</span>
+                                    <button class="view-context-btn" onclick="viewInContext('${source.document}', '${source.chunk_id}', '${source.title}', '${source.parent_title}')" title="View surrounding context">🔍 Context</button>
                                     <span class="expand-icon" id="expand-${index}">▼</span>
                                 </div>
                             </div>
                             <div class="source-meta">
-                                <span class="meta-item">📄 ${source.chunk_type}</span>
-                                <span class="meta-item">📊 Level ${source.level}</span>
-                                <span class="meta-item">📋 ${source.section_category}</span>
-                                <span class="meta-item">📄 Page ${source.page}</span>
+                                <div class="citation-line">
+                                    <span class="citation-text" title="Click to copy citation">${source.document}${source.title ? `, ${source.title}` : ''}${source.parent_title ? ` (${source.parent_title})` : ''}, p. ${source.page}</span>
+                                    <button class="copy-citation-btn" onclick="copyCitation('${source.document}', '${source.title || ''}', '${source.parent_title || ''}', ${source.page})" title="Copy citation">📋</button>
+                                </div>
+                                <div class="meta-items">
+                                    <span class="meta-item">${getDocumentIcon(source.chunk_type, source.section_category)} ${source.chunk_type}</span>
+                                    <span class="meta-item">📊 Level ${source.level}</span>
+                                    <span class="meta-item">🏷️ ${source.section_category}</span>
+                                    <span class="meta-item">📄 Page ${source.page}</span>
+                                </div>
                             </div>
                             <div class="source-excerpt" id="excerpt-${index}">
-                                <div class="excerpt-preview">${truncatedExcerpt}</div>
-                                <div class="excerpt-full" style="display: none;">${source.text_excerpt}</div>
+                                <div class="excerpt-preview">${formatLegalText(truncatedExcerpt)}</div>
+                                <div class="excerpt-full" style="display: none;">${formatLegalText(source.text_excerpt)}</div>
                             </div>
                         </div>
                     `;
@@ -1530,19 +2846,371 @@
         }
         
         function toggleSource(index) {
+            console.log('toggleSource called with index:', index);
             const preview = document.querySelector(`#excerpt-${index} .excerpt-preview`);
             const full = document.querySelector(`#excerpt-${index} .excerpt-full`);
             const icon = document.getElementById(`expand-${index}`);
             
-            if (full.style.display === 'none') {
+            console.log('Elements found:', { preview: !!preview, full: !!full, icon: !!icon });
+            
+            if (!preview || !full || !icon) {
+                console.error(`Toggle elements not found for index: ${index}`);
+                console.error('Full element content:', document.getElementById(`excerpt-${index}`));
+                return;
+            }
+            
+            console.log('Current full display:', full.style.display);
+            
+            if (full.style.display === 'none' || full.style.display === '') {
                 preview.style.display = 'none';
                 full.style.display = 'block';
                 icon.textContent = '▲';
+                console.log('Expanded to show full content');
             } else {
                 preview.style.display = 'block';
                 full.style.display = 'none';
                 icon.textContent = '▼';
+                console.log('Collapsed to show preview');
             }
+        }
+
+        function copyCitation(document, title, parentTitle, page) {
+            let citation = document;
+            if (title) citation += `, ${title}`;
+            if (parentTitle) citation += ` (${parentTitle})`;
+            citation += `, p. ${page}`;
+            
+            navigator.clipboard.writeText(citation).then(() => {
+                // Show temporary feedback
+                const event = window.event;
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = '✓';
+                button.style.backgroundColor = '#28a745';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.backgroundColor = '';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy citation:', err);
+                // Fallback for older browsers
+                prompt('Copy this citation:', citation);
+            });
+        }
+
+        async function viewInContext(document, chunkId, title, parentTitle) {
+            // Prevent event bubbling
+            event.stopPropagation();
+            
+            try {
+                showContextModal('Loading contextual information...');
+                
+                // For now, create a mock context view
+                // In a real implementation, this would make an API call to get surrounding chunks
+                const contextHtml = `
+                    <div class="context-header">
+                        <h3>Document Context</h3>
+                        <button class="close-modal-btn" onclick="closeContextModal()">×</button>
+                    </div>
+                    <div class="context-content">
+                        <div class="document-hierarchy">
+                            <h4>📁 Document: ${document}</h4>
+                            ${parentTitle ? `<div class="hierarchy-level">📂 Parent Section: ${parentTitle}</div>` : ''}
+                            ${title ? `<div class="hierarchy-level current">📄 Current Section: ${title}</div>` : ''}
+                        </div>
+                        
+                        <div class="context-notice">
+                            <p><strong>Note:</strong> Full context view requires backend implementation to retrieve surrounding document chunks.</p>
+                            <p>This would show:</p>
+                            <ul>
+                                <li>Previous and next sections in the document</li>
+                                <li>Complete hierarchical position</li>
+                                <li>Related cross-references</li>
+                                <li>Document outline/table of contents position</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="context-actions">
+                            <button onclick="alert('Would open full document viewer')" class="context-btn">📖 View Full Document</button>
+                            <button onclick="alert('Would show document outline')" class="context-btn">🗂 Document Outline</button>
+                        </div>
+                    </div>
+                `;
+                
+                showContextModal(contextHtml);
+            } catch (error) {
+                console.error('Error loading context:', error);
+                showContextModal(`<div class="error">Error loading context: ${error.message}</div>`);
+            }
+        }
+
+        function showContextModal(content) {
+            const modal = document.getElementById('contextModal') || createContextModal();
+            modal.querySelector('.modal-content').innerHTML = content;
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeContextModal() {
+            const modal = document.getElementById('contextModal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function createContextModal() {
+            const modal = document.createElement('div');
+            modal.id = 'contextModal';
+            modal.className = 'modal';
+            modal.innerHTML = `
+                <div class="modal-overlay" onclick="closeContextModal()"></div>
+                <div class="modal-content"></div>
+            `;
+            document.body.appendChild(modal);
+            return modal;
+        }
+
+        function getDocumentIcon(chunkType, sectionCategory) {
+            // Return appropriate icon based on document type and section
+            if (chunkType === 'title' || chunkType === 'heading') return '📋';
+            if (sectionCategory === 'confidentiality') return '🔒';
+            if (sectionCategory === 'termination') return '🚪';
+            if (sectionCategory === 'payment' || sectionCategory === 'compensation') return '💰';
+            if (sectionCategory === 'intellectual_property') return '🧠';
+            if (sectionCategory === 'liability') return '⚖️';
+            if (sectionCategory === 'definitions') return '📖';
+            if (sectionCategory === 'obligations') return '📝';
+            return '📄'; // default
+        }
+
+        function exportResults() {
+            if (!allSearchResults || !allSearchResults.sources || allSearchResults.sources.length === 0) {
+                alert('No results to export');
+                return;
+            }
+            
+            showExportModal();
+        }
+
+        function showExportModal() {
+            const modalContent = `
+                <div class="context-header">
+                    <h3>Export Search Results</h3>
+                    <button class="close-modal-btn" onclick="closeContextModal()">×</button>
+                </div>
+                <div class="context-content">
+                    <div class="export-options">
+                        <h4>Export Format:</h4>
+                        <div class="format-options">
+                            <label><input type="radio" name="exportFormat" value="text" checked> Plain Text</label>
+                            <label><input type="radio" name="exportFormat" value="markdown"> Markdown</label>
+                            <label><input type="radio" name="exportFormat" value="word"> Word-Formatted</label>
+                        </div>
+                        
+                        <h4>Include:</h4>
+                        <div class="include-options">
+                            <label><input type="checkbox" id="includeCitations" checked> Citations</label>
+                            <label><input type="checkbox" id="includeQuery" checked> Query Information</label>
+                            <label><input type="checkbox" id="includeTimestamp" checked> Timestamp</label>
+                            <label><input type="checkbox" id="includeMetadata" checked> Document Metadata</label>
+                        </div>
+                        
+                        <div class="export-actions">
+                            <button onclick="performExport()" class="export-btn primary">📄 Export Results</button>
+                            <button onclick="previewExport()" class="export-btn secondary">👁 Preview</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            showContextModal(modalContent);
+        }
+
+        function performExport() {
+            const format = document.querySelector('input[name="exportFormat"]:checked').value;
+            const includeCitations = document.getElementById('includeCitations').checked;
+            const includeQuery = document.getElementById('includeQuery').checked;
+            const includeTimestamp = document.getElementById('includeTimestamp').checked;
+            const includeMetadata = document.getElementById('includeMetadata').checked;
+            
+            const exportContent = generateExportContent(format, {
+                includeCitations,
+                includeQuery,
+                includeTimestamp,
+                includeMetadata
+            });
+            
+            downloadExport(exportContent, format);
+            closeContextModal();
+        }
+
+        function previewExport() {
+            const format = document.querySelector('input[name="exportFormat"]:checked').value;
+            const includeCitations = document.getElementById('includeCitations').checked;
+            const includeQuery = document.getElementById('includeQuery').checked;
+            const includeTimestamp = document.getElementById('includeTimestamp').checked;
+            const includeMetadata = document.getElementById('includeMetadata').checked;
+            
+            const exportContent = generateExportContent(format, {
+                includeCitations,
+                includeQuery,
+                includeTimestamp,
+                includeMetadata
+            });
+            
+            const previewContent = `
+                <div class="context-header">
+                    <h3>Export Preview</h3>
+                    <button class="close-modal-btn" onclick="closeContextModal()">×</button>
+                </div>
+                <div class="context-content">
+                    <div class="export-preview">
+                        <pre>${exportContent.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
+                    </div>
+                    <div class="preview-actions">
+                        <button onclick="performExport()" class="export-btn primary">📄 Download</button>
+                        <button onclick="showExportModal()" class="export-btn secondary">← Back to Options</button>
+                    </div>
+                </div>
+            `;
+            
+            showContextModal(previewContent);
+        }
+
+        function generateExportContent(format, options) {
+            const timestamp = new Date().toLocaleString();
+            const query = currentQuery;
+            const sources = allSearchResults.sources;
+            
+            let content = '';
+            
+            if (format === 'markdown') {
+                if (options.includeQuery) {
+                    content += `# Legal Research Results\n\n**Query:** ${query}\n\n`;
+                }
+                if (options.includeTimestamp) {
+                    content += `**Generated:** ${timestamp}\n\n`;
+                }
+                
+                content += `## Sources (${sources.length} results)\n\n`;
+                
+                sources.forEach((source, index) => {
+                    content += `### ${index + 1}. ${source.document}\n\n`;
+                    
+                    if (options.includeCitations) {
+                        content += `**Citation:** ${source.document}${source.title ? `, ${source.title}` : ''}${source.parent_title ? ` (${source.parent_title})` : ''}, p. ${source.page}\n\n`;
+                    }
+                    
+                    if (options.includeMetadata) {
+                        content += `**Type:** ${source.chunk_type} | **Level:** ${source.level} | **Section:** ${source.section_category} | **Confidence:** ${(source.confidence * 100).toFixed(1)}%\n\n`;
+                    }
+                    
+                    content += `${source.text_excerpt}\n\n---\n\n`;
+                });
+            } else if (format === 'word') {
+                if (options.includeQuery) {
+                    content += `LEGAL RESEARCH RESULTS\n\nQuery: ${query}\n\n`;
+                }
+                if (options.includeTimestamp) {
+                    content += `Generated: ${timestamp}\n\n`;
+                }
+                
+                content += `SOURCES (${sources.length} results)\n\n`;
+                
+                sources.forEach((source, index) => {
+                    content += `${index + 1}. ${source.document.toUpperCase()}\n\n`;
+                    
+                    if (options.includeCitations) {
+                        content += `Citation: ${source.document}${source.title ? `, ${source.title}` : ''}${source.parent_title ? ` (${source.parent_title})` : ''}, p. ${source.page}\n\n`;
+                    }
+                    
+                    if (options.includeMetadata) {
+                        content += `Type: ${source.chunk_type} | Level: ${source.level} | Section: ${source.section_category} | Confidence: ${(source.confidence * 100).toFixed(1)}%\n\n`;
+                    }
+                    
+                    content += `${source.text_excerpt}\n\n${'='.repeat(50)}\n\n`;
+                });
+            } else { // plain text
+                if (options.includeQuery) {
+                    content += `Legal Research Results\n\nQuery: ${query}\n\n`;
+                }
+                if (options.includeTimestamp) {
+                    content += `Generated: ${timestamp}\n\n`;
+                }
+                
+                content += `Sources (${sources.length} results)\n\n`;
+                
+                sources.forEach((source, index) => {
+                    content += `${index + 1}. ${source.document}\n\n`;
+                    
+                    if (options.includeCitations) {
+                        content += `Citation: ${source.document}${source.title ? `, ${source.title}` : ''}${source.parent_title ? ` (${source.parent_title})` : ''}, p. ${source.page}\n\n`;
+                    }
+                    
+                    if (options.includeMetadata) {
+                        content += `Type: ${source.chunk_type} | Level: ${source.level} | Section: ${source.section_category} | Confidence: ${(source.confidence * 100).toFixed(1)}%\n\n`;
+                    }
+                    
+                    content += `${source.text_excerpt}\n\n${'-'.repeat(50)}\n\n`;
+                });
+            }
+            
+            return content;
+        }
+
+        function downloadExport(content, format) {
+            const extensions = {
+                'text': 'txt',
+                'markdown': 'md',
+                'word': 'txt'
+            };
+            
+            const filename = `legal_research_${new Date().toISOString().slice(0, 10)}.${extensions[format]}`;
+            
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function formatLegalText(text) {
+            if (!text) return text;
+            
+            // Common legal terms to highlight
+            const legalTerms = [
+                'shall', 'shall not', 'may', 'must', 'agreement', 'contract', 'party', 'parties',
+                'hereby', 'whereas', 'therefore', 'notwithstanding', 'subject to', 'in accordance with',
+                'provided that', 'except as', 'including but not limited to', 'without limitation',
+                'confidentiality', 'intellectual property', 'termination', 'breach', 'default',
+                'liability', 'indemnify', 'damages', 'jurisdiction', 'governing law', 'force majeure',
+                'assignment', 'amendment', 'modification', 'severability', 'entire agreement'
+            ];
+            
+            let formattedText = text;
+            
+            // Highlight section numbers (e.g., "1.1", "2.3.4", "Article 5", "Section 3")
+            formattedText = formattedText.replace(
+                /(\b(?:Article|Section|Clause)\s+\d+(?:\.\d+)*\b|\b\d+\.\d+(?:\.\d+)*\b)/gi,
+                '<span class="section-number">$1</span>'
+            );
+            
+            // Highlight legal terms (case insensitive, but preserve original case)
+            legalTerms.forEach(term => {
+                const regex = new RegExp(`\\b(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})\\b`, 'gi');
+                formattedText = formattedText.replace(regex, '<span class="legal-term">$1</span>');
+            });
+            
+            // Format paragraphs with proper indentation for sub-clauses
+            formattedText = formattedText.replace(/\n\s*\(([a-z]|\d+)\)/g, '\n<div class="clause-text">($1)</div>');
+            
+            return formattedText;
         }
         
         function formatAnswer(text) {
@@ -1585,14 +3253,24 @@
             
             // Then handle other markdown formatting
             return text
+                // Handle markdown headers (###, ##, #)
+                .replace(/^### (.*$)/gm, '<h3 style="color: #2d3748; font-size: 1.1rem; font-weight: 600; margin: 1.5rem 0 0.75rem 0; padding-bottom: 0.5rem; border-bottom: 1px solid #e2e8f0;">$1</h3>')
+                .replace(/^## (.*$)/gm, '<h2 style="color: #2d3748; font-size: 1.25rem; font-weight: 700; margin: 2rem 0 1rem 0;">$1</h2>')
+                .replace(/^# (.*$)/gm, '<h1 style="color: #2d3748; font-size: 1.5rem; font-weight: 800; margin: 2rem 0 1rem 0;">$1</h1>')
+                // Handle bold and italic
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                 .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                // Handle inline code
                 .replace(/`(.*?)`/g, '<code style="background: #f1f5f9; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em;">$1</code>')
+                // Handle line breaks and paragraphs
                 .replace(/\n\n/g, '</p><p>')
                 .replace(/\n/g, '<br>')
                 .replace(/^/, '<p>')
                 .replace(/$/, '</p>')
-                .replace(/<p><\/p>/g, '');
+                .replace(/<p><\/p>/g, '')
+                // Clean up headers inside paragraphs
+                .replace(/<p>(<h[1-6][^>]*>.*?<\/h[1-6]>)<\/p>/g, '$1')
+                .replace(/<p>(<h[1-6][^>]*>.*?<\/h[1-6]>)<br>/g, '$1');
         }
         
         function showStatus(message, type) {
@@ -1614,6 +3292,89 @@
             return div.innerHTML;
         }
         
+        async function fetchAllSources() {
+            if (!currentQuery) return;
+            
+            try {
+                // Get current collection filter if any
+                const collectionSelect = document.getElementById('collectionFilter');
+                const selectedCollection = collectionSelect && collectionSelect.value ? [collectionSelect.value] : null;
+                
+                const response = await fetch('/query_hierarchical', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        question: currentQuery,
+                        k: allSearchResults.total_results, // Request all results
+                        project_filter: selectedCollection
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.sources) {
+                    // Update only the sources section with all results
+                    let sourcesHtml = '';
+                    result.sources.forEach((source, index) => {
+                        // For legal documents, show more context - try to cut at sentence boundary
+                        let truncatedExcerpt = source.text_excerpt;
+                        if (source.text_excerpt.length > 500) {
+                            const cutPoint = source.text_excerpt.substring(0, 500).lastIndexOf('. ');
+                            if (cutPoint > 300) {
+                                truncatedExcerpt = source.text_excerpt.substring(0, cutPoint + 1) + ' [...]';
+                            } else {
+                                truncatedExcerpt = source.text_excerpt.substring(0, 500) + '...';
+                            }
+                        }
+                        
+                        // Use unique IDs with "all-" prefix to avoid conflicts
+                        const uniqueIndex = `all-${index}`;
+                        
+                        sourcesHtml += `
+                            <div class="source-item" onclick="toggleSource('${uniqueIndex}')">
+                                <div class="source-header">
+                                    <span class="source-document">${source.document}</span>
+                                    <div class="source-controls">
+                                        <span class="source-confidence">${(source.confidence * 100).toFixed(1)}% match</span>
+                                        <button class="view-context-btn" onclick="viewInContext('${source.document}', '${source.chunk_id}', '${source.title}', '${source.parent_title}')" title="View surrounding context">🔍 Context</button>
+                                        <span class="expand-icon" id="expand-${uniqueIndex}">▼</span>
+                                    </div>
+                                </div>
+                                <div class="source-meta">
+                                    <div class="citation-line">
+                                        <span class="citation-text" title="Click to copy citation">${source.document}${source.title ? `, ${source.title}` : ''}${source.parent_title ? ` (${source.parent_title})` : ''}, p. ${source.page}</span>
+                                        <button class="copy-citation-btn" onclick="copyCitation('${source.document}', '${source.title || ''}', '${source.parent_title || ''}', ${source.page})" title="Copy citation">📋</button>
+                                    </div>
+                                    <div class="meta-items">
+                                        <span class="meta-item">${getDocumentIcon(source.chunk_type, source.section_category)} ${source.chunk_type}</span>
+                                        <span class="meta-item">📊 Level ${source.level}</span>
+                                        <span class="meta-item">🏷️ ${source.section_category}</span>
+                                        <span class="meta-item">📄 Page ${source.page}</span>
+                                    </div>
+                                </div>
+                                <div class="source-excerpt" id="excerpt-${uniqueIndex}">
+                                    <div class="excerpt-preview">${formatLegalText(truncatedExcerpt)}</div>
+                                    <div class="excerpt-full" style="display: none;">${formatLegalText(source.text_excerpt)}</div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    // Update title to show all results
+                    document.getElementById('sourcesTitle').innerHTML = `Document Sources (${result.sources.length} of ${result.total_results} results)`;
+                    document.getElementById('sourcesList').innerHTML = sourcesHtml;
+                    
+                    console.log(`Expanded to show ${result.sources.length} of ${result.total_results} total results`);
+                } else {
+                    console.error('Failed to fetch all sources:', result);
+                }
+            } catch (error) {
+                console.error('Error fetching all sources:', error);
+            }
+        }
+        
         async function loadSystemStatus() {
             try {
                 const response = await fetch('/health');
@@ -1632,6 +3393,572 @@
                 console.error('Failed to load system status:', error);
                 document.getElementById('systemStatus').textContent = 'Error';
                 document.getElementById('systemStatus').className = 'status-value error';
+            }
+        }
+        
+        async function loadAvailableCollections() {
+            console.log('loadAvailableCollections called');
+            try {
+                const response = await fetch('/projects');
+                const data = await response.json();
+                console.log('Collections API response:', data);
+                
+                if (response.ok && data.projects) {
+                    availableCollections = data.projects;
+                    console.log('Set availableCollections to:', availableCollections);
+                    updateCollectionFilter();
+                    updateCollectionsDisplay();
+                } else {
+                    console.error('API response not ok or no projects:', data);
+                }
+            } catch (error) {
+                console.error('Error loading collections:', error);
+            }
+        }
+        
+        function updateCollectionFilter() {
+            console.log('updateCollectionFilter called');
+            const collectionFilter = document.getElementById('collectionFilter');
+            console.log('collectionFilter element:', collectionFilter);
+            console.log('availableCollections:', availableCollections);
+            
+            if (!collectionFilter) {
+                console.error('collectionFilter element not found!');
+                return;
+            }
+            
+            if (!availableCollections || availableCollections.length === 0) {
+                console.log('No collections available');
+                return;
+            }
+            
+            // Clear existing options except "All Collections"
+            collectionFilter.innerHTML = '<option value="">All Collections</option>';
+            
+            // Add collection options without grouping for simplicity
+            availableCollections.forEach(collection => {
+                const option = document.createElement('option');
+                option.value = collection.project_name;
+                option.textContent = `${collection.project_name} (${collection.document_count} docs)`;
+                collectionFilter.appendChild(option);
+                console.log('Added option:', option.textContent);
+            });
+            
+            console.log('Collection filter updated successfully');
+        }
+        
+        function formatCollectionType(type) {
+            return type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        }
+        
+        function updateCollectionsDisplay() {
+            const collectionsGrid = document.getElementById('collectionsGrid');
+            if (!collectionsGrid) return;
+            
+            collectionsGrid.innerHTML = '';
+            
+            availableCollections.forEach(collection => {
+                const card = document.createElement('div');
+                card.className = 'collection-card';
+                card.innerHTML = `
+                    <div class="collection-content">
+                        <div class="collection-name">${collection.project_name}</div>
+                        <div class="collection-meta">
+                            <span class="collection-type">${formatCollectionType(collection.project_type)}</span>
+                            <span>${collection.document_count} documents</span>
+                            <span>${collection.chunk_count} chunks</span>
+                            ${collection.practice_area ? `<span>${collection.practice_area}</span>` : ''}
+                        </div>
+                    </div>
+                    <button class="delete-collection-btn" onclick="deleteCollection('${collection.project_name}')" title="Delete Collection">
+                        🗑️
+                    </button>
+                `;
+                collectionsGrid.appendChild(card);
+            });
+            
+            // Show collections section if there are collections
+            if (availableCollections.length > 0) {
+                document.getElementById('collectionsSection').style.display = 'block';
+            }
+        }
+        
+        function toggleCollections() {
+            const section = document.getElementById('collectionsSection');
+            const button = document.querySelector('.collections-toggle');
+            
+            if (section.style.display === 'none') {
+                section.style.display = 'block';
+                button.textContent = 'Hide';
+            } else {
+                section.style.display = 'none';
+                button.textContent = 'Show';
+            }
+        }
+        
+        async function deleteCollection(projectName) {
+            if (!confirm(`Are you sure you want to delete the collection "${projectName}"? This action cannot be undone.`)) {
+                return;
+            }
+            
+            try {
+                // For now, we'll use the clear database endpoint since there's no project-specific delete
+                // TODO: Implement project-specific deletion in the backend
+                const response = await fetch('/clear-database', {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    alert(`Collection "${projectName}" deleted successfully.`);
+                    // Reload collections after deletion
+                    simpleLoadCollections();
+                    // Also update the dropdown
+                    const collectionFilter = document.getElementById('collectionFilter');
+                    if (collectionFilter) {
+                        collectionFilter.innerHTML = '<option value="">All Collections</option>';
+                    }
+                } else {
+                    const error = await response.json();
+                    alert(`Error deleting collection: ${error.detail || 'Unknown error'}`);
+                }
+            } catch (error) {
+                console.error('Error deleting collection:', error);
+                alert(`Error deleting collection: ${error.message}`);
+            }
+        }
+        
+        // Project Upload Functions
+        function showProjectUpload() {
+            const uploadSection = document.getElementById('projectUploadSection');
+            if (!uploadSection) {
+                console.error('Project upload section not found');
+                return;
+            }
+            
+            uploadSection.style.display = 'flex';
+            
+            // Use setTimeout to ensure DOM is fully rendered
+            setTimeout(() => {
+                setupProjectFileHandlers();
+                populateExistingCollections();
+            }, 100);
+        }
+        
+        function switchToNewCollection() {
+            // Update tab styles
+            document.getElementById('newCollectionBtn').classList.add('active');
+            document.getElementById('existingCollectionBtn').classList.remove('active');
+            
+            // Show/hide sections
+            document.getElementById('newCollectionFields').style.display = 'block';
+            document.getElementById('existingCollectionRow').style.display = 'none';
+            
+            // Update form title and button
+            document.querySelector('.upload-header h3').textContent = 'Create Collection & Upload Documents';
+            document.getElementById('uploadProjectBtn').textContent = 'Create Collection & Upload';
+        }
+        
+        function switchToExistingCollection() {
+            // Update tab styles
+            document.getElementById('newCollectionBtn').classList.remove('active');
+            document.getElementById('existingCollectionBtn').classList.add('active');
+            
+            // Show/hide sections
+            document.getElementById('newCollectionFields').style.display = 'none';
+            document.getElementById('existingCollectionRow').style.display = 'block';
+            
+            // Update form title and button
+            document.querySelector('.upload-header h3').textContent = 'Add Documents to Collection';
+            document.getElementById('uploadProjectBtn').textContent = 'Add Documents';
+            
+            // Populate existing collections dropdown
+            populateExistingCollections();
+        }
+        
+        async function populateExistingCollections() {
+            const select = document.getElementById('existingCollectionSelect');
+            if (!select) return;
+            
+            // Show loading state
+            select.innerHTML = '<option value="">Loading collections...</option>';
+            
+            // Load collections if not already loaded
+            if (!availableCollections || availableCollections.length === 0) {
+                try {
+                    const response = await fetch('/projects');
+                    const data = await response.json();
+                    if (response.ok && data.projects) {
+                        availableCollections = data.projects;
+                    }
+                } catch (error) {
+                    console.error('Error loading collections:', error);
+                    select.innerHTML = '<option value="">Error loading collections</option>';
+                    return;
+                }
+            }
+            
+            // Populate the dropdown
+            select.innerHTML = '<option value="">Choose a collection...</option>';
+            
+            if (availableCollections && availableCollections.length > 0) {
+                availableCollections.forEach(collection => {
+                    const option = document.createElement('option');
+                    option.value = collection.project_name;
+                    option.textContent = `${collection.project_name} (${formatCollectionType(collection.project_type)})`;
+                    select.appendChild(option);
+                });
+            } else {
+                select.innerHTML = '<option value="">No collections found</option>';
+            }
+        }
+        
+        function closeProjectUpload() {
+            document.getElementById('projectUploadSection').style.display = 'none';
+            clearProjectForm();
+        }
+        
+        function clearProjectForm() {
+            document.getElementById('projectName').value = '';
+            document.getElementById('practiceArea').value = '';
+            document.getElementById('legalTopics').value = '';
+            document.getElementById('fileList').style.display = 'none';
+            document.getElementById('fileList').innerHTML = '';
+            document.getElementById('addMoreFiles').style.display = 'none';
+            selectedCollectionFiles = [];
+        }
+        
+        function setupProjectFileHandlers() {
+            console.log('setupProjectFileHandlers called');
+            const fileInput = document.getElementById('projectFileInput');
+            const dropZone = document.getElementById('fileDropZone');
+            const browseLink = dropZone ? dropZone.querySelector('.browse-link') : null;
+            
+            console.log('Elements found:', {
+                fileInput: !!fileInput,
+                dropZone: !!dropZone,
+                browseLink: !!browseLink
+            });
+            
+            if (!fileInput || !dropZone || !browseLink) {
+                console.error('Required elements not found for file handlers');
+                return;
+            }
+            
+            // Check if handlers are already attached to prevent duplicates
+            if (fileInput._handlersAttached) {
+                console.log('Handlers already attached, skipping');
+                return;
+            }
+            
+            console.log('Setting up file handlers...');
+            
+            // Handle browse click
+            browseLink.addEventListener('click', () => fileInput.click());
+            dropZone.addEventListener('click', () => fileInput.click());
+            
+            // Handle file selection
+            fileInput.addEventListener('change', handleProjectFileSelection);
+            
+            // Mark handlers as attached
+            fileInput._handlersAttached = true;
+            
+            // Handle drag and drop
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            });
+            
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('dragover');
+            });
+            
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+                const files = Array.from(e.dataTransfer.files).filter(f => f.type === 'application/pdf');
+                if (files.length > 0) {
+                    handleProjectFiles(files);
+                }
+            });
+        }
+        
+        function handleProjectFileSelection(event) {
+            console.log('handleProjectFileSelection called');
+            console.log('event.target.files:', event.target.files);
+            const files = Array.from(event.target.files);
+            console.log('Selected', files.length, 'files:', files.map(f => f.name));
+            handleProjectFiles(files);
+            
+            // Clear the input so the same files can be selected again if needed
+            event.target.value = '';
+        }
+        
+        function handleProjectFiles(files) {
+            selectedCollectionFiles = [...selectedCollectionFiles, ...files];
+            console.log('Total files selected:', selectedCollectionFiles.length);
+            displaySelectedFiles();
+        }
+        
+        function displaySelectedFiles() {
+            console.log('displaySelectedFiles called, selectedCollectionFiles.length:', selectedCollectionFiles.length);
+            const fileList = document.getElementById('fileList');
+            const addMoreFiles = document.getElementById('addMoreFiles');
+            console.log('Elements found:', { fileList: !!fileList, addMoreFiles: !!addMoreFiles });
+            
+            if (selectedCollectionFiles.length === 0) {
+                console.log('No files to display');
+                if (fileList) fileList.style.display = 'none';
+                if (addMoreFiles) addMoreFiles.style.display = 'none';
+                return;
+            }
+            
+            console.log('Displaying files...');
+            if (fileList) {
+                fileList.style.display = 'block';
+                fileList.innerHTML = '';
+            }
+            if (addMoreFiles) {
+                addMoreFiles.style.display = 'block';
+            }
+            
+            selectedCollectionFiles.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.id = `file-item-${index}`;
+                fileItem.innerHTML = `
+                    <div class="file-content">
+                        <div class="file-header">
+                            <div class="file-info">
+                                <span>📄</span>
+                                <span class="file-name">${file.name}</span>
+                                <span class="file-status ready" id="file-status-${index}">Ready</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <select class="file-type-select" data-index="${index}">
+                                    <option value="contract">Contract</option>
+                                    <option value="memo">Memo</option>
+                                    <option value="research">Research</option>
+                                    <option value="template">Template</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <button onclick="removeProjectFile(${index})" style="background: none; border: none; color: #6b7280; cursor: pointer;">✕</button>
+                            </div>
+                        </div>
+                        <div class="file-progress" id="file-progress-${index}" style="display: none;">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-fill-${index}" style="width: 0%;"></div>
+                            </div>
+                            <div class="progress-text" id="progress-text-${index}">0%</div>
+                        </div>
+                    </div>
+                `;
+                if (fileList) {
+                    fileList.appendChild(fileItem);
+                }
+            });
+        }
+        
+        function removeProjectFile(index) {
+            selectedCollectionFiles.splice(index, 1);
+            displaySelectedFiles();
+        }
+        
+        function addMoreFiles() {
+            document.getElementById('projectFileInput').click();
+        }
+        
+        
+        // Helper functions for progress tracking
+        function updateFileStatus(index, status, message = '') {
+            const statusElement = document.getElementById(`file-status-${index}`);
+            if (statusElement) {
+                statusElement.textContent = message || status;
+                statusElement.className = `file-status ${status.toLowerCase()}`;
+            }
+        }
+        
+        function updateFileProgress(index, progress) {
+            const progressContainer = document.getElementById(`file-progress-${index}`);
+            const progressFill = document.getElementById(`progress-fill-${index}`);
+            const progressText = document.getElementById(`progress-text-${index}`);
+            
+            if (progressContainer && progressFill && progressText) {
+                progressContainer.style.display = 'block';
+                progressFill.style.width = `${progress}%`;
+                progressText.textContent = `${Math.round(progress)}%`;
+            }
+        }
+        
+        async function uploadProject() {
+            console.log('uploadProject called');
+            const isNewCollection = document.getElementById('newCollectionBtn').classList.contains('active');
+            console.log('isNewCollection:', isNewCollection);
+            
+            let projectType, projectName, practiceArea, legalTopics;
+            
+            if (isNewCollection) {
+                // New collection mode
+                projectType = document.getElementById('projectType').value;
+                projectName = document.getElementById('projectName').value;
+                practiceArea = document.getElementById('practiceArea').value;
+                legalTopics = document.getElementById('legalTopics').value;
+                
+                console.log('New collection mode - projectName:', projectName);
+                
+                if (!projectName.trim()) {
+                    alert('Please enter a collection name');
+                    return;
+                }
+            } else {
+                // Existing collection mode
+                console.log('Existing collection mode');
+                const existingCollection = document.getElementById('existingCollectionSelect').value;
+                console.log('existingCollection selected:', existingCollection);
+                console.log('availableCollections:', availableCollections);
+                
+                if (!existingCollection) {
+                    alert('Please select an existing collection');
+                    return;
+                }
+                
+                // Find the collection details
+                const collection = availableCollections.find(c => c.project_name === existingCollection);
+                console.log('Found collection:', collection);
+                
+                if (collection) {
+                    projectType = collection.project_type;
+                    projectName = collection.project_name;
+                    practiceArea = collection.practice_area;
+                    legalTopics = '';
+                } else {
+                    alert('Selected collection not found in available collections');
+                    return;
+                }
+            }
+            
+            if (selectedCollectionFiles.length === 0) {
+                alert('Please select at least one file');
+                return;
+            }
+            
+            // Gather file types
+            const fileTypes = {};
+            document.querySelectorAll('.file-type-select').forEach(select => {
+                const index = parseInt(select.dataset.index);
+                const fileName = selectedCollectionFiles[index].name;
+                fileTypes[fileName] = select.value;
+            });
+            
+            const uploadBtn = document.getElementById('uploadProjectBtn');
+            const addMoreBtn = document.getElementById('addMoreFiles');
+            uploadBtn.disabled = true;
+            addMoreBtn.style.display = 'none';
+            uploadBtn.textContent = `Uploading ${selectedCollectionFiles.length} files...`;
+            
+            let successCount = 0;
+            let errorCount = 0;
+            const errors = [];
+            
+            try {
+                // Set all files to uploading status
+                selectedCollectionFiles.forEach((file, i) => {
+                    updateFileStatus(i, 'uploading', 'Uploading...');
+                    updateFileProgress(i, 0);
+                });
+                
+                // Start progress simulation for all files
+                const progressIntervals = [];
+                selectedCollectionFiles.forEach((file, i) => {
+                    const interval = setInterval(() => {
+                        const currentProgress = parseFloat(document.getElementById(`progress-fill-${i}`).style.width) || 0;
+                        if (currentProgress < 90) {
+                            updateFileProgress(i, currentProgress + Math.random() * 10);
+                        }
+                    }, 300 + Math.random() * 200); // Vary speed per file
+                    progressIntervals.push(interval);
+                });
+                
+                // Create FormData with all files and metadata (original working approach)
+                const formData = new FormData();
+                formData.append('project_type', projectType);
+                formData.append('project_name', projectName);
+                if (practiceArea) formData.append('practice_area', practiceArea);
+                if (legalTopics) {
+                    const topics = legalTopics.split(',').map(t => t.trim()).filter(t => t);
+                    formData.append('legal_topics', JSON.stringify(topics));
+                }
+                formData.append('file_types', JSON.stringify(fileTypes));
+                
+                selectedCollectionFiles.forEach(file => {
+                    formData.append('files', file);
+                });
+                
+                // Upload all files together (but show individual progress)
+                const response = await fetch('/ingest_project', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                // Clear all progress intervals
+                progressIntervals.forEach(interval => clearInterval(interval));
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    // Set all files to completed
+                    selectedCollectionFiles.forEach((file, i) => {
+                        updateFileProgress(i, 100);
+                        updateFileStatus(i, 'success', 'Completed');
+                    });
+                    successCount = selectedCollectionFiles.length;
+                } else {
+                    // Set all files to failed
+                    selectedCollectionFiles.forEach((file, i) => {
+                        updateFileStatus(i, 'error', 'Failed');
+                        updateFileProgress(i, 0);
+                    });
+                    errorCount = selectedCollectionFiles.length;
+                    errors.push(`Collection creation failed: ${result.detail}`);
+                }
+                
+                // Show final results
+                if (errorCount === 0) {
+                    const successMessage = isNewCollection 
+                        ? `Collection "${projectName}" created successfully! Processed ${successCount} files.`
+                        : `Added ${successCount} files to collection "${projectName}" successfully!`;
+                    
+                    // Show success message and auto-close after 3 seconds
+                    uploadBtn.textContent = '✓ Upload Complete';
+                    uploadBtn.style.background = '#16a34a';
+                    
+                    setTimeout(() => {
+                        closeProjectUpload();
+                        loadSystemStatus();
+                        loadAvailableCollections();
+                    }, 2000);
+                } else {
+                    let message = `Completed with ${successCount} successful, ${errorCount} failed:\n`;
+                    message += errors.slice(0, 3).join('\n');
+                    if (errors.length > 3) message += `\n...and ${errors.length - 3} more`;
+                    alert(message);
+                    
+                    uploadBtn.textContent = `${successCount}/${selectedCollectionFiles.length} completed`;
+                    if (successCount > 0) {
+                        setTimeout(() => {
+                            loadSystemStatus();
+                            loadAvailableCollections();
+                        }, 1000);
+                    }
+                }
+                
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+            } finally {
+                if (errorCount === selectedCollectionFiles.length) {
+                    uploadBtn.disabled = false;
+                    uploadBtn.textContent = isNewCollection ? 'Create Collection & Upload' : 'Add Documents';
+                    addMoreBtn.style.display = 'block';
+                }
             }
         }
         

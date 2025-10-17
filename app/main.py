@@ -2,7 +2,7 @@
 FastAPI application for Legal Document RAG Pipeline - Simplified Docling-only Version
 Using Docling + Qdrant + Sentence Transformers integration
 """
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi import FastAPI, UploadFile, File, HTTPException, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
@@ -43,6 +43,7 @@ class QueryRequest(BaseModel):
     k: Optional[int] = 10
     section_filter: Optional[str] = None
     level_filter: Optional[int] = None
+    project_filter: Optional[List[str]] = None  # List of project names to search
 
 class HierarchicalSource(BaseModel):
     document: str
@@ -66,6 +67,16 @@ class QueryResponse(BaseModel):
     approach_used: str
     filters_applied: Optional[Dict[str, Any]] = None
 
+class ProjectMetadata(BaseModel):
+    project_type: str  # client_matter, research, templates, knowledge
+    project_name: str
+    practice_area: Optional[str] = None
+    legal_topics: Optional[List[str]] = None
+
+class ProjectIngestRequest(BaseModel):
+    project_metadata: ProjectMetadata
+    file_types: Dict[str, str]  # filename -> document_type
+
 class IngestResponse(BaseModel):
     message: str
     document_name: str
@@ -74,10 +85,23 @@ class IngestResponse(BaseModel):
     chunk_types: Optional[Dict[str, int]] = None
     section_categories: Optional[Dict[str, int]] = None
 
+class ProjectIngestResponse(BaseModel):
+    message: str
+    project_name: str
+    files_processed: List[IngestResponse]
+    total_files: int
+    status: str
+
 @app.get("/", response_class=HTMLResponse)
 async def root():
     """Serve the simplified UI"""
     with open("static/index_simple.html", "r") as f:
+        return HTMLResponse(content=f.read(), status_code=200)
+
+@app.get("/test", response_class=HTMLResponse)
+async def test():
+    """Serve test page"""
+    with open("test.html", "r") as f:
         return HTMLResponse(content=f.read(), status_code=200)
 
 @app.get("/health")
@@ -121,6 +145,64 @@ async def ingest_document_hierarchical(file: UploadFile = File(...)):
     """Ingest PDF document using Docling with hierarchical structure extraction"""
     return await ingest_document(file)
 
+@app.post("/ingest_project", response_model=ProjectIngestResponse)
+async def ingest_project_files(
+    project_type: str = Form(...),
+    project_name: str = Form(...),
+    practice_area: str = Form(None),
+    legal_topics: str = Form(None),  # JSON string of list
+    files: List[UploadFile] = File(...),
+    file_types: str = Form(None)  # JSON string of dict
+):
+    """Ingest multiple files with shared project metadata"""
+    try:
+        import json
+        
+        # Parse JSON strings
+        topics_list = json.loads(legal_topics) if legal_topics else []
+        file_types_dict = json.loads(file_types) if file_types else {}
+        
+        # Create project metadata
+        project_metadata = {
+            "project_type": project_type,
+            "project_name": project_name,
+            "practice_area": practice_area,
+            "legal_topics": topics_list
+        }
+        
+        results = []
+        for file in files:
+            if not file.filename.lower().endswith('.pdf'):
+                continue
+                
+            # Read file content
+            content = await file.read()
+            
+            # Combine project metadata with file-specific metadata
+            file_metadata = {
+                **project_metadata,
+                "document_type": file_types_dict.get(file.filename, "document"),
+                "document_name": file.filename
+            }
+            
+            # Process with enhanced metadata
+            result = docling_rag_service.ingest_document_hierarchical_with_metadata(
+                content, file.filename, file_metadata
+            )
+            results.append(IngestResponse(**result))
+        
+        return ProjectIngestResponse(
+            message=f"Successfully processed {len(results)} files for project '{project_name}'",
+            project_name=project_name,
+            files_processed=results,
+            total_files=len(files),
+            status="success"
+        )
+    
+    except Exception as e:
+        logger.error(f"Error ingesting project files: {e}")
+        raise HTTPException(status_code=500, detail=f"Error processing project files: {str(e)}")
+
 @app.post("/query", response_model=QueryResponse)
 async def query_documents(request: QueryRequest):
     """Query documents using hierarchical structure-aware search"""
@@ -130,7 +212,8 @@ async def query_documents(request: QueryRequest):
             request.question, 
             k=request.k,
             section_filter=request.section_filter,
-            level_filter=request.level_filter
+            level_filter=request.level_filter,
+            project_filter=request.project_filter
         )
         
         if not search_results:
@@ -260,6 +343,43 @@ async def get_hierarchical_collections():
 async def health_hierarchical():
     """Health check for hierarchical collection"""
     return await health()
+
+@app.get("/projects")
+async def get_projects():
+    """Get list of available projects"""
+    try:
+        return docling_rag_service.get_available_projects()
+    except Exception as e:
+        logger.error(f"Error getting projects: {e}")
+        raise HTTPException(status_code=500, detail=f"Error getting projects: {str(e)}")
+
+@app.get("/debug/metadata")
+async def debug_metadata():
+    """Debug endpoint to inspect stored metadata"""
+    try:
+        return docling_rag_service.debug_project_metadata()
+    except Exception as e:
+        logger.error(f"Error debugging metadata: {e}")
+        raise HTTPException(status_code=500, detail=f"Error debugging metadata: {str(e)}")
+
+@app.get("/debug/filter/{project_name}")
+async def test_project_filter(project_name: str):
+    """Test project filtering directly"""
+    try:
+        return docling_rag_service.test_project_filter(project_name)
+    except Exception as e:
+        logger.error(f"Error testing filter: {e}")
+        raise HTTPException(status_code=500, detail=f"Error testing filter: {str(e)}")
+
+@app.post("/debug/create-indexes")
+async def create_indexes():
+    """Create payload indexes for filtering"""
+    try:
+        docling_rag_service._create_payload_indexes()
+        return {"message": "Indexes created successfully"}
+    except Exception as e:
+        logger.error(f"Error creating indexes: {e}")
+        raise HTTPException(status_code=500, detail=f"Error creating indexes: {str(e)}")
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -101,12 +101,14 @@ class DoclingRAGService:
             raise
     
     def _ensure_collection_exists(self):
-        """Ensure the hierarchical collection exists"""
+        """Ensure the hierarchical collection exists with proper indexes"""
         try:
             collections = self.qdrant_client.get_collections()
             collection_exists = any(col.name == self.collection_name for col in collections.collections)
             
             if not collection_exists:
+                from qdrant_client.models import PayloadSchemaType
+                
                 self.qdrant_client.create_collection(
                     collection_name=self.collection_name,
                     vectors_config=VectorParams(
@@ -115,12 +117,53 @@ class DoclingRAGService:
                     )
                 )
                 logger.info(f"Created new collection: {self.collection_name}")
+                
+                # Create indexes for filterable fields
+                self._create_payload_indexes()
             else:
                 logger.info(f"Using existing collection: {self.collection_name}")
+                # Ensure indexes exist for existing collection
+                self._create_payload_indexes()
                 
         except Exception as e:
             logger.error(f"Error ensuring collection exists: {e}")
             raise
+    
+    def _create_payload_indexes(self):
+        """Create indexes for filterable payload fields"""
+        try:
+            from qdrant_client.models import PayloadSchemaType
+            
+            # Index for project-related fields
+            indexes_to_create = [
+                ("project_name", PayloadSchemaType.KEYWORD),
+                ("project_type", PayloadSchemaType.KEYWORD),
+                ("practice_area", PayloadSchemaType.KEYWORD),
+                ("document_type", PayloadSchemaType.KEYWORD),
+                ("section_category", PayloadSchemaType.KEYWORD),
+                ("level", PayloadSchemaType.INTEGER),
+                ("chunk_type", PayloadSchemaType.KEYWORD),
+                ("document", PayloadSchemaType.KEYWORD)
+            ]
+            
+            for field_name, schema_type in indexes_to_create:
+                try:
+                    self.qdrant_client.create_payload_index(
+                        collection_name=self.collection_name,
+                        field_name=field_name,
+                        field_schema=schema_type
+                    )
+                    logger.info(f"Created index for field: {field_name}")
+                except Exception as e:
+                    # Index might already exist, which is fine
+                    if "already exists" in str(e).lower():
+                        logger.debug(f"Index for {field_name} already exists")
+                    else:
+                        logger.warning(f"Could not create index for {field_name}: {e}")
+                        
+        except Exception as e:
+            logger.error(f"Error creating payload indexes: {e}")
+            # Don't raise here as this is not critical for basic functionality
     
     def process_document_with_docling(self, pdf_content: bytes, filename: str) -> DoclingDocument:
         """Process PDF using Docling to extract structure"""
@@ -349,30 +392,117 @@ class DoclingRAGService:
                 "status": "error"
             }
     
+    def ingest_document_hierarchical_with_metadata(self, pdf_content: bytes, filename: str, extra_metadata: Dict[str, Any]) -> Dict[str, Any]:
+        """Ingest document using hierarchical chunking approach with additional project metadata"""
+        try:
+            # Process with Docling
+            docling_doc = self.process_document_with_docling(pdf_content, filename)
+            
+            # Extract hierarchical chunks
+            chunks = self.extract_hierarchical_chunks(docling_doc, filename)
+            
+            if not chunks:
+                return {
+                    "message": "No content extracted from document",
+                    "document_name": filename,
+                    "chunks_processed": 0,
+                    "status": "failed"
+                }
+            
+            # Generate embeddings and store
+            points = []
+            for i, chunk in enumerate(chunks):
+                try:
+                    # Generate embedding
+                    embedding = self.embeddings.embed_query(chunk.content)
+                    
+                    # Create point for Qdrant with enhanced metadata
+                    payload = {
+                        "document": chunk.document_name,
+                        "chunk_id": chunk.chunk_id,
+                        "chunk_type": chunk.chunk_type,
+                        "level": chunk.level,
+                        "title": chunk.title,
+                        "parent_title": chunk.parent_title,
+                        "page": chunk.page_number,
+                        "content": chunk.content,
+                        "text_excerpt": chunk.content[:200],
+                        "section_category": chunk.metadata.get("section_category", "general"),
+                        "metadata": chunk.metadata,
+                        "ingestion_time": datetime.now().isoformat(),
+                        # Add project metadata
+                        **extra_metadata
+                    }
+                    
+                    point = PointStruct(
+                        id=hash(chunk.chunk_id) % (2**63 - 1),  # Ensure positive integer
+                        vector=embedding,
+                        payload=payload
+                    )
+                    points.append(point)
+                    
+                except Exception as e:
+                    logger.error(f"Error processing chunk {i}: {e}")
+                    continue
+            
+            # Batch insert into Qdrant
+            if points:
+                self.qdrant_client.upsert(
+                    collection_name=self.collection_name,
+                    points=points
+                )
+            
+            return {
+                "message": f"Successfully processed {filename} with hierarchical chunking and project metadata",
+                "document_name": filename,
+                "chunks_processed": len(points),
+                "status": "success",
+                "chunk_types": {chunk.chunk_type: sum(1 for c in chunks if c.chunk_type == chunk.chunk_type) for chunk in chunks},
+                "section_categories": {chunk.metadata.get("section_category", "general"): sum(1 for c in chunks if c.metadata.get("section_category") == chunk.metadata.get("section_category")) for chunk in chunks}
+            }
+            
+        except Exception as e:
+            logger.error(f"Error in hierarchical document ingestion with metadata: {e}")
+            return {
+                "message": f"Error processing document: {str(e)}",
+                "document_name": filename,
+                "chunks_processed": 0,
+                "status": "error"
+            }
+    
     def query_hierarchical(
         self, 
         query: str, 
         k: int = 10,
         section_filter: Optional[str] = None,
-        level_filter: Optional[int] = None
+        level_filter: Optional[int] = None,
+        project_filter: Optional[List[str]] = None
     ) -> List[Dict[str, Any]]:
         """Query with hierarchical structure awareness"""
         try:
             # Generate query embedding
             query_embedding = self.embeddings.embed_query(query)
             
-            # Build filter conditions
-            filter_conditions = {}
+            # Build filter conditions using correct Qdrant syntax
+            from qdrant_client.models import Filter, FieldCondition, MatchValue, MatchAny
+            
+            filter_conditions = []
             if section_filter:
-                filter_conditions["section_category"] = section_filter
+                filter_conditions.append(FieldCondition(key="section_category", match=MatchValue(value=section_filter)))
             if level_filter is not None:
-                filter_conditions["level"] = level_filter
+                filter_conditions.append(FieldCondition(key="level", match=MatchValue(value=level_filter)))
+            if project_filter:
+                # Filter by project names
+                if len(project_filter) == 1:
+                    filter_conditions.append(FieldCondition(key="project_name", match=MatchValue(value=project_filter[0])))
+                else:
+                    filter_conditions.append(FieldCondition(key="project_name", match=MatchAny(any=project_filter)))
             
             # Search in Qdrant
             search_results = self.qdrant_client.search(
                 collection_name=self.collection_name,
                 query_vector=query_embedding,
-                query_filter={"must": [{"key": key, "match": {"value": value}} for key, value in filter_conditions.items()]} if filter_conditions else None,
+                query_filter=Filter(must=filter_conditions) if filter_conditions else None,
                 limit=k,
                 with_payload=True
             )
@@ -462,6 +592,117 @@ class DoclingRAGService:
             
         except Exception as e:
             logger.error(f"Error clearing collection: {e}")
+            return {"error": str(e)}
+    
+    def get_available_projects(self) -> Dict[str, Any]:
+        """Get list of available projects and their metadata"""
+        try:
+            # Scroll through all points to get unique projects
+            scroll_result = self.qdrant_client.scroll(
+                collection_name=self.collection_name,
+                limit=1000,  # Adjust as needed
+                with_payload=True
+            )
+            
+            projects = {}
+            project_types = set()
+            practice_areas = set()
+            
+            for point in scroll_result[0]:
+                payload = point.payload
+                project_name = payload.get("project_name")
+                project_type = payload.get("project_type")
+                practice_area = payload.get("practice_area")
+                
+                if project_name:
+                    if project_name not in projects:
+                        projects[project_name] = {
+                            "project_name": project_name,
+                            "project_type": project_type,
+                            "practice_area": practice_area,
+                            "document_count": 0,
+                            "chunk_count": 0,
+                            "documents": set()
+                        }
+                    
+                    projects[project_name]["chunk_count"] += 1
+                    if payload.get("document"):
+                        projects[project_name]["documents"].add(payload.get("document"))
+                    
+                    if project_type:
+                        project_types.add(project_type)
+                    if practice_area:
+                        practice_areas.add(practice_area)
+            
+            # Convert sets to lists and counts
+            for project in projects.values():
+                project["document_count"] = len(project["documents"])
+                project["documents"] = list(project["documents"])
+            
+            return {
+                "projects": list(projects.values()),
+                "project_types": list(project_types),
+                "practice_areas": list(practice_areas),
+                "total_projects": len(projects)
+            }
+            
+        except Exception as e:
+            logger.error(f"Error getting available projects: {e}")
+            return {"error": str(e)}
+    
+    def debug_project_metadata(self, limit: int = 5) -> Dict[str, Any]:
+        """Debug function to inspect stored metadata"""
+        try:
+            scroll_result = self.qdrant_client.scroll(
+                collection_name=self.collection_name,
+                limit=limit,
+                with_payload=True
+            )
+            
+            debug_points = []
+            for point in scroll_result[0]:
+                payload = point.payload
+                debug_points.append({
+                    "point_id": point.id,
+                    "document": payload.get("document"),
+                    "project_name": payload.get("project_name"),
+                    "project_type": payload.get("project_type"),
+                    "practice_area": payload.get("practice_area"),
+                    "chunk_id": payload.get("chunk_id"),
+                    "has_project_metadata": bool(payload.get("project_name"))
+                })
+            
+            return {
+                "total_points_checked": len(debug_points),
+                "points": debug_points
+            }
+            
+        except Exception as e:
+            logger.error(f"Error debugging project metadata: {e}")
+            return {"error": str(e)}
+    
+    def test_project_filter(self, project_name: str) -> Dict[str, Any]:
+        """Test project filtering directly"""
+        try:
+            from qdrant_client.models import Filter, FieldCondition, MatchValue
+            
+            # Test with simple filter
+            search_results = self.qdrant_client.search(
+                collection_name=self.collection_name,
+                query_vector=[0] * 384,  # Dummy vector
+                query_filter=Filter(must=[FieldCondition(key="project_name", match=MatchValue(value=project_name))]),
+                limit=5,
+                with_payload=True
+            )
+            
+            return {
+                "project_searched": project_name,
+                "results_found": len(search_results),
+                "results": [{"document": r.payload.get("document"), "project_name": r.payload.get("project_name")} for r in search_results]
+            }
+            
+        except Exception as e:
+            logger.error(f"Error testing project filter: {e}")
             return {"error": str(e)}
 
 # Initialize the service
